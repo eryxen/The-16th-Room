@@ -6,192 +6,39 @@
     <title>The 16th Room - MBTI 恐怖游戏</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
-            background: #0a0a0a;
-            color: #e0e0e0;
-            min-height: 100vh;
-            line-height: 1.8;
-            overflow-x: hidden;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            position: relative;
-        }
-        h1 { 
-            text-align: center; 
-            color: #8b0000;
-            font-size: 2em;
-            margin-bottom: 10px;
-            text-shadow: 0 0 10px #ff0000;
-        }
-        .subtitle {
-            text-align: center;
-            color: #555;
-            font-size: 0.85em;
-            margin-bottom: 30px;
-            letter-spacing: 2px;
-        }
+        body { font-family: 'Microsoft YaHei', 'Noto Sans SC', sans-serif; background: #0a0a0a; color: #e0e0e0; min-height: 100vh; line-height: 1.8; overflow-x: hidden; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        h1 { text-align: center; color: #8b0000; font-size: 2em; margin-bottom: 10px; text-shadow: 0 0 10px #ff0000; }
+        .subtitle { text-align: center; color: #555; font-size: 0.85em; margin-bottom: 30px; letter-spacing: 2px; }
         .screen { display: none; }
         .screen.active { display: block; animation: fadeIn 0.8s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        
-        .question {
-            background: #1a1a1a;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            border-left: 3px solid #8b0000;
-        }
+        .question { background: #1a1a1a; padding: 20px; border-radius: 10px; margin-bottom: 20px; border-left: 3px solid #8b0000; }
         .question h3 { margin-bottom: 15px; color: #ff6b6b; }
-        .progress {
-            text-align: center;
-            color: #555;
-            margin-bottom: 15px;
-            font-size: 0.9em;
-        }
-        .options button {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            background: #2a2a2a;
-            border: 1px solid #444;
-            color: #fff;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.3s;
-            font-size: 1em;
-            text-align: left;
-        }
-        .options button:hover {
-            background: #3a3a3a;
-            border-color: #8b0000;
-            box-shadow: 0 0 10px rgba(139,0,0,0.3);
-        }
-        
-        .mbti-result {
-            text-align: center;
-            padding: 30px;
-            background: linear-gradient(180deg, #1a0000 0%, #0a0a0a 100%);
-            border-radius: 15px;
-            border: 2px solid #8b0000;
-        }
-        .mbti-type {
-            font-size: 4em;
-            color: #ff4444;
-            text-shadow: 0 0 20px #ff0000;
-            margin: 10px 0;
-        }
-        .mbti-desc {
-            color: #aaa;
-            margin: 20px 0;
-            font-style: italic;
-        }
-        
-        .story {
-            background: #111;
-            padding: 25px;
-            border-radius: 10px;
-            border: 1px solid #333;
-            min-height: 300px;
-        }
-        .story-text {
-            font-size: 1.1em;
-            margin-bottom: 25px;
-            white-space: pre-line;
-            animation: textFade 1s ease;
-        }
+        .progress { text-align: center; color: #555; margin-bottom: 15px; font-size: 0.9em; }
+        .options button { display: block; width: 100%; padding: 15px; margin: 10px 0; background: #2a2a2a; border: 1px solid #444; color: #fff; cursor: pointer; border-radius: 8px; transition: all 0.3s; font-size: 1em; text-align: left; }
+        .options button:hover { background: #3a3a3a; border-color: #8b0000; box-shadow: 0 0 10px rgba(139,0,0,0.3); }
+        .mbti-result { text-align: center; padding: 30px; background: linear-gradient(180deg, #1a0000 0%, #0a0a0a 100%); border-radius: 15px; border: 2px solid #8b0000; }
+        .mbti-type { font-size: 4em; color: #ff4444; text-shadow: 0 0 20px #ff0000; margin: 10px 0; }
+        .mbti-desc { color: #aaa; margin: 20px 0; font-style: italic; }
+        .story { background: #111; padding: 25px; border-radius: 10px; border: 1px solid #333; min-height: 300px; }
+        .story-text { font-size: 1.1em; margin-bottom: 25px; white-space: pre-line; animation: textFade 1s ease; }
         @keyframes textFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .choice-btn {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            background: linear-gradient(90deg, #2a1a1a, #1a1a1a);
-            border: 1px solid #8b0000;
-            color: #ff6b6b;
-            cursor: pointer;
-            border-radius: 8px;
-            font-size: 1em;
-            transition: all 0.3s;
-        }
-        .choice-btn:hover {
-            background: linear-gradient(90deg, #3a2a2a, #2a1a1a);
-            box-shadow: 0 0 15px rgba(139,0,0,0.5);
-            transform: translateX(5px);
-        }
-        
-        .start-btn {
-            display: block;
-            width: 200px;
-            margin: 40px auto;
-            padding: 20px;
-            background: #8b0000;
-            border: none;
-            color: #fff;
-            font-size: 1.2em;
-            cursor: pointer;
-            border-radius: 10px;
-            transition: all 0.3s;
-        }
-        .start-btn:hover {
-            background: #a00000;
-            box-shadow: 0 0 20px #ff0000;
-        }
-
-        /* Horror effects */
+        .choice-btn { display: block; width: 100%; padding: 15px; margin: 10px 0; background: linear-gradient(90deg, #2a1a1a, #1a1a1a); border: 1px solid #8b0000; color: #ff6b6b; cursor: pointer; border-radius: 8px; font-size: 1em; transition: all 0.3s; }
+        .choice-btn:hover { background: linear-gradient(90deg, #3a2a2a, #2a1a1a); box-shadow: 0 0 15px rgba(139,0,0,0.5); transform: translateX(5px); }
+        .start-btn { display: block; width: 200px; margin: 40px auto; padding: 20px; background: #8b0000; border: none; color: #fff; font-size: 1.2em; cursor: pointer; border-radius: 10px; transition: all 0.3s; }
+        .start-btn:hover { background: #a00000; box-shadow: 0 0 20px #ff0000; }
+        .sound-toggle { position: fixed; top: 15px; right: 15px; background: #222; border: 1px solid #444; color: #888; padding: 8px 12px; border-radius: 20px; cursor: pointer; font-size: 0.8em; z-index: 100; }
+        .sound-toggle.on { color: #4a4; border-color: #4a4; }
         .glitch { animation: glitch 0.3s infinite; }
-        @keyframes glitch {
-            0% { transform: translate(0); filter: hue-rotate(0deg); }
-            20% { transform: translate(-3px, 3px); filter: hue-rotate(90deg); }
-            40% { transform: translate(-3px, -3px); }
-            60% { transform: translate(3px, 3px); filter: hue-rotate(-90deg); }
-            80% { transform: translate(3px, -3px); }
-            100% { transform: translate(0); filter: hue-rotate(0deg); }
-        }
+        @keyframes glitch { 0% { transform: translate(0); filter: hue-rotate(0deg); } 20% { transform: translate(-3px, 3px); filter: hue-rotate(90deg); } 40% { transform: translate(-3px, -3px); } 60% { transform: translate(3px, 3px); filter: hue-rotate(-90deg); } 80% { transform: translate(3px, -3px); } 100% { transform: translate(0); filter: hue-rotate(0deg); } }
         .screen-flash { animation: screenFlash 0.15s; }
-        @keyframes screenFlash {
-            0%, 100% { background: #0a0a0a; }
-            50% { background: #300; }
-        }
+        @keyframes screenFlash { 0%, 100% { background: #0a0a0a; } 50% { background: #300; } }
         .shake { animation: shake 0.5s; }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 50%, 90% { transform: translateX(-5px); }
-            30%, 70% { transform: translateX(5px); }
-        }
-        
-        /* Ambient particles */
-        .particle {
-            position: fixed;
-            width: 2px;
-            height: 2px;
-            background: #8b000044;
-            border-radius: 50%;
-            pointer-events: none;
-            animation: float 8s infinite;
-        }
-        @keyframes float {
-            0%, 100% { opacity: 0; transform: translateY(100vh); }
-            50% { opacity: 1; }
-            100% { transform: translateY(-10vh); }
-        }
-
-        /* Ending styles */
-        .ending-tag {
-            display: inline-block;
-            background: #8b0000;
-            color: #fff;
-            padding: 3px 12px;
-            border-radius: 4px;
-            font-size: 0.8em;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-        }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 50%, 90% { transform: translateX(-5px); } 30%, 70% { transform: translateX(5px); } }
+        .particle { position: fixed; width: 2px; height: 2px; background: #8b000044; border-radius: 50%; pointer-events: none; animation: float 8s infinite; }
+        @keyframes float { 0%, 100% { opacity: 0; transform: translateY(100vh); } 50% { opacity: 1; } 100% { transform: translateY(-10vh); } }
+        .ending-tag { display: inline-block; background: #8b0000; color: #fff; padding: 3px 12px; border-radius: 4px; font-size: 0.8em; margin-bottom: 15px; letter-spacing: 1px; }
         .ending-good .ending-tag { background: #2e7d32; }
         .ending-neutral .ending-tag { background: #555; }
         .ending-bad .ending-tag { background: #8b0000; }
@@ -199,39 +46,29 @@
     </style>
 </head>
 <body>
+    <button class="sound-toggle on" id="soundToggle">🔊 音效</button>
     <div class="container">
         <h1>🕯️ The 16th Room 🕯️</h1>
         <p class="subtitle">第十六间房</p>
-        
-        <!-- 开始画面 -->
         <div id="start-screen" class="screen active">
             <p style="text-align: center; margin: 40px 0; color: #888;">
-                你相信...命运吗？<br><br>
-                当红线绑住两个人，<br>
-                活着的人...或者已故的人，<br>
-                都无法逃脱。<br><br>
+                你相信...命运吗？<br><br>当红线绑住两个人，<br>活着的人...或者已故的人，<br>都无法逃脱。<br><br>
                 <span style="color:#555; font-size:0.85em;">— 基于 MBTI 性格的恐怖文字冒险 —</span>
             </p>
-            <button class="start-btn" onclick="if(typeof startGame==="function"){startGame()}else{location.reload()}">开始测试</button>
+            <button class="start-btn" id="btnStart">开始测试</button>
         </div>
-        
-        <!-- 问卷画面 -->
         <div id="quiz-screen" class="screen">
             <div class="progress" id="progress"></div>
             <div id="questions"></div>
         </div>
-        
-        <!-- 结果画面 -->
         <div id="result-screen" class="screen">
             <div class="mbti-result">
                 <p style="color:#888;">你的 MBTI 类型</p>
                 <div class="mbti-type" id="mbti-type">???</div>
                 <p class="mbti-desc" id="mbti-desc"></p>
-                <button class="start-btn" onclick="startStory()">进入故事</button>
+                <button class="start-btn" id="btnEnterStory">进入故事</button>
             </div>
         </div>
-        
-        <!-- 剧情画面 -->
         <div id="story-screen" class="screen">
             <div class="story">
                 <p class="story-text" id="story-text"></p>
@@ -239,677 +76,64 @@
             </div>
         </div>
     </div>
-
     <script>
-        // ========== MBTI Questions ==========
-        const questions = [
-            {
-                q: "1/8 — 你独自走在荒废的古宅里，突然听到脚步声，你会：",
-                dim: "EI",
-                options: [
-                    { val: "E", text: "大声问：谁在那里？" },
-                    { val: "I", text: "屏住呼吸，悄悄躲起来" }
-                ]
-            },
-            {
-                q: "2/8 — 你们被困在房间里，大家开始争吵，你会：",
-                dim: "EI",
-                options: [
-                    { val: "E", text: "站出来组织大家冷静下来" },
-                    { val: "I", text: "默默观察，寻找其他出路" }
-                ]
-            },
-            {
-                q: "3/8 — 你发现桌上有一本泛黄的日记，你会：",
-                dim: "SN",
-                options: [
-                    { val: "S", text: "仔细检查日记的材质、年份、细节" },
-                    { val: "N", text: "直觉这是重要的线索，快速翻开" }
-                ]
-            },
-            {
-                q: "4/8 — 墙上刻着一排意义不明的符号，你会：",
-                dim: "SN",
-                options: [
-                    { val: "S", text: "一个一个记录下来，之后慢慢分析" },
-                    { val: "N", text: "尝试联想——这可能是某种暗号或地图" }
-                ]
-            },
-            {
-                q: "5/8 — 你感受到一股寒意，像是有人在你耳边轻声低语：",
-                dim: "TF",
-                options: [
-                    { val: "T", text: "冷静分析：这一定是风声或心理作用" },
-                    { val: "F", text: "感到不安：这可能是某种警告" }
-                ]
-            },
-            {
-                q: "6/8 — 你的同伴被"她"抓住了，但去救他可能会搭上你自己：",
-                dim: "TF",
-                options: [
-                    { val: "T", text: "冷静判断——贸然去救可能全军覆没" },
-                    { val: "F", text: "不管了，不能看着同伴出事" }
-                ]
-            },
-            {
-                q: "7/8 — 面前出现两条路，一条通往光亮的大厅，一条通往黑暗的地下室：",
-                dim: "JP",
-                options: [
-                    { val: "J", text: "选择一条，果断走下去" },
-                    { val: "P", text: "两边都查看一下再做决定" }
-                ]
-            },
-            {
-                q: "8/8 — 你发现了逃出去的门，但钥匙可能在另一个房间：",
-                dim: "JP",
-                options: [
-                    { val: "J", text: "制定计划：先去拿钥匙，再回来开门" },
-                    { val: "P", text: "先试试别的方法——也许可以撬开" }
-                ]
-            }
-        ];
-        
-        // MBTI descriptions
-        const mbtiDescs = {
-            "INTJ": "冷静的策划者。你会分析诅咒的规则，找出破除之法。",
-            "INTP": "好奇的研究者。你会追查仪式的来源，试图理解一切。",
-            "ENTJ": "果断的领袖。你会带领其他人，或者独自对抗。",
-            "ENTP": "机智的挑战者。你会试图与"它"谈判。",
-            "INFJ": "敏感的先知。你能感受到常人不易察觉的存在。",
-            "INFP": "浪漫的理想者。你可能会被情感所困，也可能是破局关键。",
-            "ENFJ": "温暖的治疗者。你会试图拯救他人，即使牺牲自己。",
-            "ENFP": "热情的探险者。你会寻找每一个可能的出路。",
-            "ISTJ": "严谨的守护者。你会遵守规则，试图安全生存。",
-            "ISFJ": "忠诚的守护者。你会保护同伴，即使代价是自己。",
-            "ESTJ": "实际的组织者。你会制定计划，带领团队。",
-            "ESFJ": "关怀的照顾者。你会照顾伤者，团结大家。",
-            "ISTP": "冷静的生存者。你会随机应变，独自行动。",
-            "ISFP": "敏感的艺术家。你会注意到别人忽略的美与恐怖。",
-            "ESTP": "大胆的行动者。你会冒险尝试，快速反应。",
-            "ESFP": "热情的表演者。你会保持乐观，给大家带来希望。"
-        };
-
-        // ========== Story Data ==========
-        const storyData = {
-            "start": {
-                text: `你在一阵刺耳的唢呐声中醒来。
-
-眼前是一间老旧的婚房，大红蜡烛摇曳着诡异的光芒。窗花是褪色的红，桌上摆着合卺酒——两只酒杯用红线连在一起。
-
-门外传来脚步声，还有...笑声？
-
-你低头看自己——身上穿着新郎的礼服。`,
-                choices: [
-                    { next: "door", text: "🚪 悄悄走到门边偷看" },
-                    { next: "window", text: "🪟 试图从窗户逃跑" },
-                    { next: "table", text: "🪶 检查桌上的东西" }
-                ],
-                effect: "shake"
-            },
-            "door": {
-                text: `你轻手轻脚走到门边，从门缝往外看。
-
-走廊里站着一排人，他们都穿着古装，脸上带着诡异的笑。最前面站着一位穿着嫁衣的女子，背对着你。
-
-她突然开口："相公...你来了..."
-
-她的头缓缓转动——180度——向你转来。
-
-那张脸——是你自己的脸！`,
-                choices: [
-                    { next: "run", text: "🏃 转身就跑！" },
-                    { next: "speak", text: "💬 尝试与她对话" }
-                ],
-                effect: "glitch"
-            },
-            "window": {
-                text: `你跑到窗边，用力推——窗户纹丝不动。
-
-外面不是街道，而是一片浓雾。雾中隐约可见红色的灯笼，还有...一个个穿着嫁衣的人影。
-
-他们都在看着你。
-
-"相公..."身后传来轻柔的声音。
-
-你慢慢回头——`,
-                choices: [
-                    { next: "fight", text: "⚔️ 拿起桌上的酒杯防身" },
-                    { next: "accept", text: "💀 接受命运" }
-                ],
-                effect: "flash"
-            },
-            "table": {
-                text: `你走到桌边。合卺酒旁边放着一张泛黄的纸条：
-
-"既已成婚，勿要负心。若要离去，需找到信物。"
-
-除此之外，还有一枚玉佩和一把剪刀。
-
-外面的脚步声越来越近...`,
-                choices: [
-                    { next: "jade", text: "🪨 拿起玉佩" },
-                    { next: "scissors", text: "✂️ 拿起剪刀" }
-                ]
-            },
-            "run": {
-                text: `你冲出门，沿着走廊拼命奔跑。
-
-但这条路像是没有尽头——无论你跑多快，两边的景色永远一样。红色的灯笼、褪色的窗花、关着的门，一扇又一扇。
-
-突然，你停下了。
-
-因为你看到了自己——穿着新郎礼服，站在走廊尽头，微微笑着。
-
-"你想跑去哪里？" 那个"你"问道。
-
-"我们...已经结婚了呀。"`,
-                choices: [
-                    { next: "accept", text: "💀 接受命运" },
-                    { next: "count_doors", text: "🚪 留意走廊的门——数一数有多少扇" }
-                ],
-                effect: "shake"
-            },
-            "speak": {
-                text: `"你...你是谁？"你颤抖着问。
-
-那张和你一样的脸笑了："我是谁？你不记得了吗？"
-
-"是你...答应的聘礼。是你...签下的婚书。是你...答应的永远不会离开。"
-
-她的眼眶流出血泪："可是你...背叛了誓言。"`,
-                choices: [
-                    { next: "explain", text: "💬 我不记得做过这样的承诺" },
-                    { next: "fight", text: "⚔️ 趁她说话时反击" }
-                ],
-                effect: "glitch"
-            },
-            "explain": {
-                text: `"等一下...我真的不记得。"你尽量让声音平稳。
-
-"不记得？"她歪着头，血泪沿着下巴滴落。
-
-"你说你会照顾我一辈子...你说死也不会放开我的手..."
-
-她伸出手——手腕上绑着一根红线，另一端...连着你的无名指。
-
-"看，证据就在这里。"
-
-你低头看——那根红线正在收紧。`,
-                choices: [
-                    { next: "cut_thread", text: "✂️ 试图扯断红线" },
-                    { next: "follow_thread", text: "🧵 顺着红线看它通向哪里" }
-                ]
-            },
-            "fight": {
-                text: `你挥拳打过去——
-
-但你的手穿过了她的身体，像打在浓雾里。
-
-她没有躲，甚至没有眨眼。
-
-"打啊...再用力一点。" 她微笑着。"反正...你打不到我的。"
-
-你的手开始发麻，指尖透出暗红色——像是被某种东西侵蚀。
-
-"我们已经是一体了...你打的...是你自己。"`,
-                choices: [
-                    { next: "accept", text: "💀 她说得对，你已经无法逃脱" },
-                    { next: "count_doors", text: "🚪 不理她，冲出去找别的出路" },
-                    { next: "jade_hidden", text: "🪨 你注意到她脖子上戴着一枚玉佩..." }
-                ],
-                effect: "shake"
-            },
-            "stab": {
-                text: `你闭上眼，用尽全力刺下去。
-
-剪刀刺入的瞬间——你感到自己的胸口一阵剧痛。
-
-低头一看，你的胸口也出现了同样的伤口，鲜血正在蔓延。
-
-"我说过了...我们是一体的。" 她的声音像是从四面八方传来。
-
-"你伤害我...就是伤害你自己。"
-
-你跪倒在地，意识开始模糊...`,
-                choices: [
-                    { next: "accept", text: "💀 陷入黑暗" },
-                    { next: "jade_last", text: "🪨 在倒下前，你看到地上有什么东西在发光..." }
-                ],
-                effect: "flash"
-            },
-            "scissors": {
-                text: `你抓起剪刀。
-
-嫁衣女子笑了——笑得越来越大声，越来越刺耳。
-
-"你想...伤害我？"
-
-她的身体开始扭曲，四肢以不可能的角度弯曲。
-
-"我们是夫妻啊...夫妻之间...怎么能互相伤害呢？"
-
-她扑了过来——`,
-                choices: [
-                    { next: "stab", text: "✂️ 刺下去" },
-                    { next: "cut_thread", text: "✂️ 不是刺她——剪断红线！" },
-                    { next: "accept", text: "💀 不反抗" }
-                ],
-                effect: "shake"
-            },
-            "jade": {
-                text: `你拿起玉佩的瞬间，整个房间剧烈震动。
-
-红色的光芒从玉佩中散发出来。嫁衣女子后退了一步，露出痛苦的表情。
-
-"不...不要这个..."
-
-玉佩上刻着四个字：死生相许。
-
-这是...誓言的证明。`,
-                choices: [
-                    { next: "break", text: "💥 摔碎玉佩" },
-                    { next: "keep", text: "📿 戴上玉佩" }
-                ],
-                effect: "flash"
-            },
-            "jade_hidden": {
-                text: `你盯着她脖子上的玉佩。
-
-她注意到你的目光，下意识用手捂住："不要...不要看..."
-
-但你已经看清了——那枚玉佩和桌上那枚一模一样。
-
-上面刻着：死生相许。
-
-"这是什么？" 你问。
-
-"这是...束缚我们的东西。" 她的表情突然变了，从诡异变得...悲伤。
-
-"也是...唯一能让我们自由的东西。"`,
-                choices: [
-                    { next: "break", text: "💥 从她手中夺过玉佩，摔碎" },
-                    { next: "keep", text: "📿 你选择接受这段羁绊" },
-                    { next: "truth", text: "❓ 告诉我真相——你到底是谁" }
-                ]
-            },
-            "jade_last": {
-                text: `在倒下的瞬间，你的指尖触碰到一枚冰凉的玉佩。
-
-它不知从哪里出现——也许一直在这里，只是你没注意到。
-
-玉佩上刻着：死生相许。
-
-你用最后的力气握紧它。光芒从指缝中泄出。
-
-"不...!" 她尖叫道。
-
-你有两个选择。用你最后的力气。`,
-                choices: [
-                    { next: "break", text: "💥 摔碎它" },
-                    { next: "keep", text: "📿 握紧它，不放手" }
-                ],
-                effect: "flash"
-            },
-            "cut_thread": {
-                text: `你找到剪刀——或者用指甲、用牙齿——拼命想剪断那根红线。
-
-红线发出刺眼的红光，你的手被灼伤，但你没有停下。
-
-"不要...不要剪..." 她的声音变得颤抖。不是愤怒，是...恐惧？
-
-"如果你剪断...我就真的...消失了..."
-
-最后一丝红线断裂。
-
-一切陷入寂静。`,
-                choices: [
-                    { next: "ending_free", text: "→ 继续" }
-                ],
-                effect: "flash"
-            },
-            "follow_thread": {
-                text: `你没有扯断红线，而是顺着它走。
-
-红线穿过门缝，沿着走廊延伸。你跟着它走过一扇又一扇门——
-
-第1扇、第2扇...第15扇。
-
-走廊尽头是第16扇门。红线消失在门缝下。
-
-门上挂着一块牌子：
-
-"第十六间房"
-
-你推开门——`,
-                choices: [
-                    { next: "room16", text: "🚪 走进去" }
-                ]
-            },
-            "count_doors": {
-                text: `你开始留意走廊两边的门。
-
-一扇、两扇...你数着。每扇门都紧锁着，门缝里透出微弱的红光。
-
-第15扇门之后——走廊到了尽头。
-
-但那里还有一扇门。跟其他不一样，这扇门是黑色的，没有红光。
-
-门上挂着一块生锈的牌子：
-
-"第十六间房"
-
-你伸手推门——门竟然没锁。`,
-                choices: [
-                    { next: "room16", text: "🚪 走进第十六间房" },
-                    { next: "accept", text: "💀 不，这太可怕了" }
-                ]
-            },
-            "room16": {
-                text: `第十六间房里很小，空荡荡的。
-
-只有一面镜子。
-
-你走近镜子——里面不是你的倒影。
-
-是那个嫁衣女子。但这一次，她没有诡异的笑，没有血泪。
-
-她看起来...很累。
-
-"你终于来了。" 她轻声说。
-
-"我等了很久。"
-
-"这间房...是我们最后的机会。"
-
-镜子里出现了两个东西：一枚玉佩，和一把剪刀。`,
-                choices: [
-                    { next: "truth", text: "❓ 在做选择之前——告诉我一切" },
-                    { next: "break", text: "💥 摔碎镜子" },
-                    { next: "keep", text: "📿 伸手触碰镜中的她" }
-                ],
-                effect: "flash"
-            },
-            "truth": {
-                text: `她沉默了很久。
-
-"我不是鬼。我是...你。"
-
-"你的另一半——被你遗忘的那个自己。"
-
-"很久以前，你做了一个承诺。你说你会接受完整的自己——光明的部分，和黑暗的部分。"
-
-"但后来你害怕了。你把我锁在这里——第十六间房。"
-
-"那些红线、婚房、仪式...都是你自己造的牢笼。"
-
-她看着你："现在，你要怎么做？"`,
-                choices: [
-                    { next: "ending_whole", text: "📿 我接受你——接受完整的自己" },
-                    { next: "ending_free", text: "✂️ 我要放你自由，也放自己自由" },
-                    { next: "break", text: "💥 我不信——摔碎这一切" }
-                ]
-            },
-
-            // ========== ENDINGS ==========
-            "break": {
-                text: `【结局：破镜】
-
-你用力摔碎了玉佩。或者是镜子。或者两者都是。
-
-一声巨响，红光爆发。她发出尖叫，身体开始消散。
-
-"不...不可能..."
-
-一切碎裂。红线、婚房、走廊——像玻璃一样四分五裂。
-
-你在一阵白光中醒来。
-
-普通的房间，普通的阳光。
-
-你自由了。
-
-但你枕头边放着一枚碎裂的玉佩。刻字依稀可辨：
-
-"死生相许"
-
-你有时候会觉得...少了什么。但你说不上来是什么。`,
-                choices: [
-                    { next: "start", text: "🔄 重新开始" }
-                ],
-                endingClass: "ending-neutral",
-                endingTag: "结局 B — 破镜"
-            },
-            "keep": {
-                text: `【结局：共生】
-
-你戴上玉佩。或者握住了她的手。或者两者都是。
-
-一阵温暖的光芒包围了你。她微笑着融入你的身体。
-
-"这样...我们就永远在一起了。"
-
-你感到一种奇异的完整感。像是找回了丢失很久的东西。
-
-当你再次睁开眼，你还在那间婚房里。
-
-但红蜡烛不再诡异，窗花不再褪色。一切变得温暖而安静。
-
-你看着镜子——里面只有一个你。
-
-完整的你。
-
-但镜子深处...似乎还有一双眼睛在微笑。`,
-                choices: [
-                    { next: "start", text: "🔄 重新开始" }
-                ],
-                endingClass: "ending-neutral",
-                endingTag: "结局 C — 共生"
-            },
-            "accept": {
-                text: `【结局：轮回】
-
-你不再挣扎了。
-
-嫁衣女子笑了，美丽而凄凉。她轻轻握住你的手。
-
-"这样...就好。"
-
-红烛熄灭。
-
-当你再次睁眼，你发现自己也穿上了嫁衣，坐在同样的房间里。
-
-桌上摆着合卺酒。门外传来唢呐声。
-
-有人要来了。
-
-你坐在椅子上，微微笑着。
-
-红线从你的手腕延伸出去，消失在门缝里。
-
-"相公...你来了..."
-
-你发现自己说出了这句话。
-
-下一个轮回...开始了。`,
-                choices: [
-                    { next: "start", text: "🔄 重新开始" }
-                ],
-                endingClass: "ending-bad",
-                endingTag: "结局 D — 轮回"
-            },
-            "ending_free": {
-                text: `【结局：自由】
-
-红线断了。
-
-她的身影开始变淡，但这一次她没有尖叫。
-
-"谢谢你。" 她轻声说。
-
-"被困在这里太久了...我都忘了外面的世界是什么样的。"
-
-她越来越淡，像晨雾被阳光驱散。
-
-"去吧...去过你的人生。"
-
-"不要再...把自己锁起来了。"
-
-你醒了过来。房间里充满阳光。
-
-没有玉佩，没有红线，没有任何痕迹。
-
-只有一种很轻、很轻的感觉——
-
-像是卸下了一个背了很久的东西。`,
-                choices: [
-                    { next: "start", text: "🔄 重新开始" }
-                ],
-                endingClass: "ending-good",
-                endingTag: "结局 A — 自由"
-            },
-            "ending_whole": {
-                text: `【隐藏结局：完整】
-
-你走向她，张开双臂。
-
-"我不再害怕了。"
-
-她的血泪变成了普通的泪水。
-
-你拥抱了她——拥抱了自己。
-
-光芒不是来自玉佩，不是来自红线。
-
-是来自你自己。
-
-婚房消失了。走廊消失了。十六间房全部消失了。
-
-因为你不再需要它们了。
-
-你站在一片空旷的原野上，风很轻，天很蓝。
-
-脚下的红线化作了泥土中的花根。
-
-春天到了。
-
-你觉得自己...从未如此完整。`,
-                choices: [
-                    { next: "start", text: "🔄 重新开始" }
-                ],
-                endingClass: "ending-secret",
-                endingTag: "隐藏结局 — 完整 ★"
-            }
-        };
-        
-        // ========== Game State ==========
-        let answers = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
-        let currentQuestion = 0;
-        let playerMBTI = "";
-        
-        function startGame() {
-            answers = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
-            currentQuestion = 0;
-            playerMBTI = "";
-            showScreen('quiz-screen');
-            showQuestion();
-        }
-        
-        function showQuestion() {
-            const q = questions[currentQuestion];
-            document.getElementById('progress').textContent = `问题 ${currentQuestion + 1} / ${questions.length}`;
-            let html = `<div class="question"><h3>${q.q}</h3><div class="options">`;
-            q.options.forEach(opt => {
-                html += `<button onclick="answer('${opt.val}')">${opt.text}</button>`;
-            });
-            html += `</div></div>`;
-            document.getElementById('questions').innerHTML = html;
-        }
-        
-        function answer(val) {
-            answers[val]++;
-            currentQuestion++;
-            if (currentQuestion < questions.length) {
-                showQuestion();
-            } else {
-                showResult();
-            }
-        }
-        
-        function showResult() {
-            const ei = answers.E >= answers.I ? "E" : "I";
-            const sn = answers.S >= answers.N ? "S" : "N";
-            const tf = answers.T >= answers.F ? "T" : "F";
-            const jp = answers.J >= answers.P ? "J" : "P";
-            playerMBTI = ei + sn + tf + jp;
-            
-            document.getElementById('mbti-type').textContent = playerMBTI;
-            document.getElementById('mbti-desc').textContent = mbtiDescs[playerMBTI] || "你是一个独特的个体。";
-            
-            showScreen('result-screen');
-            // Glitch effect on reveal
-            const el = document.getElementById('mbti-type');
-            el.classList.add('glitch');
-            setTimeout(() => el.classList.remove('glitch'), 1500);
-        }
-        
-        function startStory() {
-            showScreen('story-screen');
-            showStoryNode('start');
-        }
-        
-        function showStoryNode(nodeId) {
-            const node = storyData[nodeId];
-            if (!node) return;
-
-            // Apply effects
-            if (node.effect === 'glitch') {
-                document.getElementById('story-text').classList.add('glitch');
-                setTimeout(() => document.getElementById('story-text').classList.remove('glitch'), 800);
-            }
-            if (node.effect === 'shake') {
-                document.querySelector('.story').classList.add('shake');
-                setTimeout(() => document.querySelector('.story').classList.remove('shake'), 500);
-            }
-            if (node.effect === 'flash') {
-                document.body.classList.add('screen-flash');
-                setTimeout(() => document.body.classList.remove('screen-flash'), 150);
-            }
-
-            // Ending tag
-            let textContent = node.text;
-            
-            document.getElementById('story-text').textContent = textContent;
-            
-            let html = '';
-            if (node.endingTag) {
-                html += `<div class="${node.endingClass || ''}"><span class="ending-tag">${node.endingTag}</span></div>`;
-            }
-            node.choices.forEach(choice => {
-                html += `<button class="choice-btn" onclick="showStoryNode('${choice.next}')">${choice.text}</button>`;
-            });
-            document.getElementById('choices').innerHTML = html;
-            
-            // Scroll to top of story
-            document.getElementById('story-screen').scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        function showScreen(id) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-        }
-        
-        // Ambient particles
-        function createParticles() {
-            for (let i = 0; i < 15; i++) {
-                const p = document.createElement('div');
-                p.className = 'particle';
-                p.style.left = Math.random() * 100 + 'vw';
-                p.style.animationDelay = Math.random() * 8 + 's';
-                p.style.animationDuration = (6 + Math.random() * 6) + 's';
-                document.body.appendChild(p);
-            }
-        }
-        createParticles();
+let audioCtx = null, soundEnabled = true, ambientStarted = false;
+function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); if (audioCtx.state === 'suspended') audioCtx.resume(); }
+document.getElementById('soundToggle').addEventListener('click', function() { soundEnabled = !soundEnabled; this.textContent = soundEnabled ? '🔊 音效' : '🔇 静音'; this.classList.toggle('on', soundEnabled); if (soundEnabled && !ambientStarted) startAmbient(); });
+function startAmbient() { if (ambientStarted || !soundEnabled) return; initAudio(); ambientStarted = true; const drone = audioCtx.createOscillator(), droneGain = audioCtx.createGain(); drone.type = 'sine'; drone.frequency.value = 55; droneGain.gain.value = 0.08; drone.connect(droneGain).connect(audioCtx.destination); drone.start(); const drone2 = audioCtx.createOscillator(), drone2Gain = audioCtx.createGain(); drone2.type = 'sine'; drone2.frequency.value = 57; drone2Gain.gain.value = 0.05; drone2.connect(drone2Gain).connect(audioCtx.destination); drone2.start(); setInterval(() => { if (soundEnabled && Math.random() > 0.7) playWhisper(); }, 8000); }
+function playWhisper() { if (!soundEnabled) return; const osc = audioCtx.createOscillator(), gain = audioCtx.createGain(), filter = audioCtx.createBiquadFilter(); osc.type = 'sawtooth'; osc.frequency.value = 200 + Math.random() * 300; filter.type = 'bandpass'; filter.frequency.value = 800; filter.Q.value = 10; gain.gain.setValueAtTime(0.02, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2); osc.connect(filter).connect(gain).connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 2); }
+function playClick() { if (!soundEnabled) return; initAudio(); const osc = audioCtx.createOscillator(), gain = audioCtx.createGain(); osc.frequency.value = 440; gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1); osc.connect(gain).connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.1); }
+function playDramatic() { if (!soundEnabled) return; initAudio(); const osc = audioCtx.createOscillator(), gain = audioCtx.createGain(); osc.type = 'sine'; osc.frequency.setValueAtTime(110, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(55, audioCtx.currentTime + 1); gain.gain.setValueAtTime(0.15, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.5); osc.connect(gain).connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 1.5); }
+const questions = [
+{ q: "1/8 — 你独自走在荒废的古宅里，突然听到脚步声，你会：", dim: "EI", options: [{ val: "E", text: "大声问：谁在那里？" }, { val: "I", text: "屏住呼吸，悄悄躲起来" }] },
+{ q: "2/8 — 你们被困在房间里，大家开始争吵，你会：", dim: "EI", options: [{ val: "E", text: "站出来组织大家冷静下来" }, { val: "I", text: "默默观察，寻找其他出路" }] },
+{ q: "3/8 — 你发现桌上有一本泛黄的日记，你会：", dim: "SN", options: [{ val: "S", text: "仔细检查日记的材质、年份、细节" }, { val: "N", text: "直觉这是重要的线索，快速翻开" }] },
+{ q: "4/8 — 墙上刻着一排意义不明的符号，你会：", dim: "SN", options: [{ val: "S", text: "一个一个记录下来，之后慢慢分析" }, { val: "N", text: "尝试联想——这可能是某种暗号或地图" }] },
+{ q: "5/8 — 你感受到一股寒意，像是有人在你耳边轻声低语：", dim: "TF", options: [{ val: "T", text: "冷静分析：这一定是风声或心理作用" }, { val: "F", text: "感到不安：这可能是某种警告" }] },
+{ q: "6/8 — 你的同伴被\"她\"抓住了，但去救他可能会搭上你自己：", dim: "TF", options: [{ val: "T", text: "冷静判断——贸然去救可能全军覆没" }, { val: "F", text: "不管了，不能看着同伴出事" }] },
+{ q: "7/8 — 面前出现两条路，一条通往光亮的大厅，一条通往黑暗的地下室：", dim: "JP", options: [{ val: "J", text: "选择一条，果断走下去" }, { val: "P", text: "两边都查看一下再做决定" }] },
+{ q: "8/8 — 你发现了逃出去的门，但钥匙可能在另一个房间：", dim: "JP", options: [{ val: "J", text: "制定计划：先去拿钥匙，再回来开门" }, { val: "P", text: "先试试别的方法——也许可以撬开" }] }
+];
+const mbtiDescs = { "INTJ": "冷静的策划者。你会分析诅咒的规则，找出破除之法。", "INTP": "好奇的研究者。你会追查仪式的来源，试图理解一切。", "ENTJ": "果断的领袖。你会带领其他人，或者独自对抗。", "ENTP": "机智的挑战者。你会试图与\"它\"谈判。", "INFJ": "敏感的先知。你能感受到常人不易察觉的存在。", "INFP": "浪漫的理想者。你可能会被情感所困，也可能是破局关键。", "ENFJ": "温暖的治疗者。你会试图拯救他人，即使牺牲自己。", "ENFP": "热情的探险者。你会寻找每一个可能的出路。", "ISTJ": "严谨的守护者。你会遵守规则，试图安全生存。", "ISFJ": "忠诚的守护者。你会保护同伴，即使代价是自己。", "ESTJ": "实际的组织者。你会制定计划，带领团队。", "ESFJ": "关怀的照顾者。你会照顾伤者，团结大家。", "ISTP": "冷静的生存者。你会随机应变，独自行动。", "ISFP": "敏感的艺术家。你会注意到别人忽略的美与恐怖。", "ESTP": "大胆的行动者。你会冒险尝试，快速反应。", "ESFP": "热情的表演者。你会保持乐观，给大家带来希望。" };
+const storyData = {
+"start": { text: "你在一阵刺耳的唢呐声中醒来。\n\n眼前是一间老旧的婚房，大红蜡烛摇曳着诡异的光芒。窗花是褪色的红，桌上摆着合卺酒——两只酒杯用红线连在一起。\n\n门外传来脚步声，还有...笑声？\n\n你低头看自己——身上穿着新郎的礼服。", choices: [{ next: "door", text: "🚪 悄悄走到门边偷看" }, { next: "window", text: "🪟 试图从窗户逃跑" }, { next: "table", text: "🪶 检查桌上的东西" }], effect: "shake" },
+"door": { text: "你轻手轻脚走到门边，从门缝往外看。\n\n走廊里站着一排人，他们都穿着古装，脸上带着诡异的笑。最前面站着一位穿着嫁衣的女子，背对着你。\n\n她突然开口：\"相公...你来了...\"\n\n她的头缓缓转动——180度——向你转来。\n\n那张脸——是你自己的脸！", choices: [{ next: "run", text: "🏃 转身就跑！" }, { next: "speak", text: "💬 尝试与她对话" }], effect: "glitch" },
+"window": { text: "你跑到窗边，用力推——窗户纹丝不动。\n\n外面不是街道，而是一片浓雾。雾中隐约可见红色的灯笼，还有...一个个穿着嫁衣的人影。\n\n他们都在看着你。\n\n\"相公...\"身后传来轻柔的声音。\n\n你慢慢回头——", choices: [{ next: "fight", text: "⚔️ 拿起桌上的酒杯防身" }, { next: "accept", text: "💀 接受命运" }], effect: "flash" },
+"table": { text: "你走到桌边。合卺酒旁边放着一张泛黄的纸条：\n\n\"既已成婚，勿要负心。若要离去，需找到信物。\"\n\n除此之外，还有一枚玉佩和一把剪刀。\n\n外面的脚步声越来越近...", choices: [{ next: "jade", text: "🪨 拿起玉佩" }, { next: "scissors", text: "✂️ 拿起剪刀" }] },
+"run": { text: "你冲出门，沿着走廊拼命奔跑。\n\n但这条路像是没有尽头——无论你跑多快，两边的景色永远一样。红色的灯笼、褪色的窗花、关着的门，一扇又一扇。\n\n突然，你停下了。\n\n因为你看到了自己——穿着新郎礼服，站在走廊尽头，微微笑着。\n\n\"你想跑去哪里？\" 那个\"你\"问道。\n\n\"我们...已经结婚了呀。\"", choices: [{ next: "accept", text: "💀 接受命运" }, { next: "count_doors", text: "🚪 留意走廊的门——数一数有多少扇" }], effect: "shake" },
+"speak": { text: "\"你...你是谁？\"你颤抖着问。\n\n那张和你一样的脸笑了：\"我是谁？你不记得了吗？\"\n\n\"是你...答应的聘礼。是你...签下的婚书。是你...答应的永远不会离开。\"\n\n她的眼眶流出血泪：\"可是你...背叛了誓言。\"", choices: [{ next: "explain", text: "💬 我不记得做过这样的承诺" }, { next: "fight", text: "⚔️ 趁她说话时反击" }], effect: "glitch" },
+"explain": { text: "\"等一下...我真的不记得。\"你尽量让声音平稳。\n\n\"不记得？\"她歪着头，血泪沿着下巴滴落。\n\n\"你说你会照顾我一辈子...你说死也不会放开我的手...\"\n\n她伸出手——手腕上绑着一根红线，另一端...连着你的无名指。\n\n\"看，证据就在这里。\"\n\n你低头看——那根红线正在收紧。", choices: [{ next: "cut_thread", text: "✂️ 试图扯断红线" }, { next: "follow_thread", text: "🧵 顺着红线看它通向哪里" }] },
+"fight": { text: "你挥拳打过去——\n\n但你的手穿过了她的身体，像打在浓雾里。\n\n她没有躲，甚至没有眨眼。\n\n\"打啊...再用力一点。\" 她微笑着。\"反正...你打不到我的。\"\n\n你的手开始发麻，指尖透出暗红色——像是被某种东西侵蚀。\n\n\"我们已经是一体了...你打的...是你自己。\"", choices: [{ next: "accept", text: "💀 她说得对，你已经无法逃脱" }, { next: "count_doors", text: "🚪 不理她，冲出去找别的出路" }, { next: "jade_hidden", text: "🪨 你注意到她脖子上戴着一枚玉佩..." }], effect: "shake" },
+"stab": { text: "你闭上眼，用尽全力刺下去。\n\n剪刀刺入的瞬间——你感到自己的胸口一阵剧痛。\n\n低头一看，你的胸口也出现了同样的伤口，鲜血正在蔓延。\n\n\"我说过了...我们是一体的。\" 她的声音像是从四面八方传来。\n\n\"你伤害我...就是伤害你自己。\"\n\n你跪倒在地，意识开始模糊...", choices: [{ next: "accept", text: "💀 陷入黑暗" }, { next: "jade_last", text: "🪨 在倒下前，你看到地上有什么东西在发光..." }], effect: "flash" },
+"scissors": { text: "你抓起剪刀。\n\n嫁衣女子笑了——笑得越来越大声，越来越刺耳。\n\n\"你想...伤害我？\"\n\n她的身体开始扭曲，四肢以不可能的角度弯曲。\n\n\"我们是夫妻啊...夫妻之间...怎么能互相伤害呢？\"\n\n她扑了过来——", choices: [{ next: "stab", text: "✂️ 刺下去" }, { next: "cut_thread", text: "✂️ 不是刺她——剪断红线！" }, { next: "accept", text: "💀 不反抗" }], effect: "shake" },
+"jade": { text: "你拿起玉佩的瞬间，整个房间剧烈震动。\n\n红色的光芒从玉佩中散发出来。嫁衣女子后退了一步，露出痛苦的表情。\n\n\"不...不要这个...\"\n\n玉佩上刻着四个字：死生相许。\n\n这是...誓言的证明。", choices: [{ next: "break", text: "💥 摔碎玉佩" }, { next: "keep", text: "📿 戴上玉佩" }], effect: "flash" },
+"jade_hidden": { text: "你盯着她脖子上的玉佩。\n\n她注意到你的目光，下意识用手捂住：\"不要...不要看...\"\n\n但你已经看清了——那枚玉佩和桌上那枚一模一样。\n\n上面刻着：死生相许。\n\n\"这是什么？\" 你问。\n\n\"这是...束缚我们的东西。\" 她的表情突然变了，从诡异变得...悲伤。\n\n\"也是...唯一能让我们自由的东西。\"", choices: [{ next: "break", text: "💥 从她手中夺过玉佩，摔碎" }, { next: "keep", text: "📿 你选择接受这段羁绊" }, { next: "truth", text: "❓ 告诉我真相——你到底是谁" }] },
+"jade_last": { text: "在倒下的瞬间，你的指尖触碰到一枚冰凉的玉佩。\n\n它不知从哪里出现——也许一直在这里，只是你没注意到。\n\n玉佩上刻着：死生相许。\n\n你用最后的力气握紧它。光芒从指缝中泄出。\n\n\"不...!\" 她尖叫道。\n\n你有两个选择。用你最后的力气。", choices: [{ next: "break", text: "💥 摔碎它" }, { next: "keep", text: "📿 握紧它，不放手" }], effect: "flash" },
+"cut_thread": { text: "你找到剪刀——或者用指甲、用牙齿——拼命想剪断那根红线。\n\n红线发出刺眼的红光，你的手被灼伤，但你没有停下。\n\n\"不要...不要剪...\" 她的声音变得颤抖。不是愤怒，是...恐惧？\n\n\"如果你剪断...我就真的...消失了...\"\n\n最后一丝红线断裂。\n\n一切陷入寂静。", choices: [{ next: "ending_free", text: "→ 继续" }], effect: "flash" },
+"follow_thread": { text: "你没有扯断红线，而是顺着它走。\n\n红线穿过门缝，沿着走廊延伸。你跟着它走过一扇又一扇门——\n\n第1扇、第2扇...第15扇。\n\n走廊尽头是第16扇门。红线消失在门缝下。\n\n门上挂着一块牌子：\n\n\"第十六间房\"\n\n你推开门——", choices: [{ next: "room16", text: "🚪 走进去" }] },
+"count_doors": { text: "你开始留意走廊两边的门。\n\n一扇、两扇...你数着。每扇门都紧锁着，门缝里透出微弱的红光。\n\n第15扇门之后——走廊到了尽头。\n\n但那里还有一扇门。跟其他不一样，这扇门是黑色的，没有红光。\n\n门上挂着一块生锈的牌子：\n\n\"第十六间房\"\n\n你伸手推门——门竟然没锁。", choices: [{ next: "room16", text: "🚪 走进第十六间房" }, { next: "accept", text: "💀 不，这太可怕了" }] },
+"room16": { text: "第十六间房里很小，空荡荡的。\n\n只有一面镜子。\n\n你走近镜子——里面不是你的倒影。\n\n是那个嫁衣女子。但这一次，她没有诡异的笑，没有血泪。\n\n她看起来...很累。\n\n\"你终于来了。\" 她轻声说。\n\n\"我等了很久。\"\n\n\"这间房...是我们最后的机会。\"\n\n镜子里出现了两个东西：一枚玉佩，和一把剪刀。", choices: [{ next: "truth", text: "❓ 在做选择之前——告诉我一切" }, { next: "break", text: "💥 摔碎镜子" }, { next: "keep", text: "📿 伸手触碰镜中的她" }], effect: "flash" },
+"truth": { text: "她沉默了很久。\n\n\"我不是鬼。我是...你。\"\n\n\"你的另一半——被你遗忘的那个自己。\"\n\n\"很久以前，你做了一个承诺。你说你会接受完整的自己——光明的部分，和黑暗的部分。\"\n\n\"但后来你害怕了。你把我锁在这里——第十六间房。\"\n\n\"那些红线、婚都是你自己造的牢房、仪式...笼。\"\n\n她看着你：\"现在，你要怎么做？\"", choices: [{ next: "ending_whole", text: "📿 我接受你——接受完整的自己" }, { next: "ending_free", text: "✂️ 我要放你自由，也放自己自由" }, { next: "break", text: "💥 我不信——摔碎这一切" }] },
+"break": { text: "【结局：破镜】\n\n你用力摔碎了玉佩。或者是镜子。或者两者都是。\n\n一声巨响，红光爆发。她发出尖叫，身体开始消散。\n\n\"不...不可能...\"\n\n一切碎裂。红线、婚房、走廊——像玻璃一样四分五裂。\n\n你在一阵白光中醒来。\n\n普通的房间，普通的阳光。\n\n你自由了。\n\n但你枕头边放着一枚碎裂的玉佩。刻字依稀可辨：\n\n\"死生相许\"\n\n你有时候会觉得...少了什么。但你说不上来是什么。", choices: [{ next: "start", text: "🔄 重新开始" }], endingClass: "ending-neutral", endingTag: "结局 B — 破镜" },
+"keep": { text: "【结局：共生】\n\n你戴上玉佩。或者握住了她的手。或者两者都是。\n\n一阵温暖的光芒包围了你。她微笑着融入你的身体。\n\n\"这样...我们就永远在一起了。\"\n\n你感到一种奇异的完整感。像是找回了丢失很久的东西。\n\n当你再次睁开眼，你还在那间婚房里。\n\n但红蜡烛不再诡异，窗花不再褪色。一切变得温暖而安静。\n\n你看着镜子——里面只有一个你。\n\n完整的你。\n\n但镜子深处...似乎还有一双眼睛在微笑。", choices: [{ next: "start", text: "🔄 重新开始" }], endingClass: "ending-neutral", endingTag: "结局 C — 共生" },
+"accept": { text: "【结局：轮回】\n\n你不再挣扎了。\n\n嫁衣女子笑了，美丽而凄凉。她轻轻握住你的手。\n\n\"这样...就好。\"\n\n红烛熄灭。\n\n当你再次睁眼，你发现自己也穿上了嫁衣，坐在同样的房间里。\n\n桌上摆着合卺酒。门外传来唢呐声。\n\n有人要来了。\n\n你坐在椅子上，微微笑着。\n\n红线从你的手腕延伸出去，消失在门缝里。\n\n\"相公...你来了...\"\n\n你发现自己说出了这句话。\n\n下一个轮回...开始了。", choices: [{ next: "start", text: "🔄 重新开始" }], endingClass: "ending-bad", endingTag: "结局 D — 轮回" },
+"ending_free": { text: "【结局：自由】\n\n红线断了。\n\n她的身影开始变淡，但这一次她没有尖叫。\n\n\"谢谢你。\" 她轻声说。\n\n\"被困在这里太久了...我都忘了外面的世界是什么样的。\"\n\n她越来越淡，像晨雾被阳光驱散。\n\n\"去吧...去过你的人生。\"\n\n\"不要再...把自己锁起来了。\"\n\n你醒了过来。房间里充满阳光。\n\n没有玉佩，没有红线，没有任何痕迹。\n\n只有一种很轻、很轻的感觉——\n\n像是卸下了一个背了很久的东西。", choices: [{ next: "start", text: "🔄 重新开始" }], endingClass: "ending-good", endingTag: "结局 A — 自由" },
+"ending_whole": { text: "【隐藏结局：完整】\n\n你走向她，张开双臂。\n\n\"我不再害怕了。\"\n\n她的血泪变成了普通的泪水。\n\n你拥抱了她——拥抱了自己。\n\n光芒不是来自玉佩，不是来自红线。\n\n是来自你自己。\n\n婚房消失了。走廊消失了。十六间房全部消失了。\n\n因为你不再需要它们了。\n\n你站在一片空旷的原野上，风很轻，天很蓝。\n\n脚下的红线化作了泥土中的花根。\n\n春天到了。\n\n你觉得自己...从未如此完整。", choices: [{ next: "start", text: "🔄 重新开始" }], endingClass: "ending-secret", endingTag: "隐藏结局 — 完整 ★" }
+};
+let answers = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+let currentQuestion = 0;
+let playerMBTI = "";
+document.getElementById('btnStart').addEventListener('click', function() { playClick(); startAmbient(); startGame(); });
+document.getElementById('btnEnterStory').addEventListener('click', function() { playDramatic(); startStory(); });
+function startGame() { answers = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 }; currentQuestion = 0; playerMBTI = ""; showScreen('quiz-screen'); showQuestion(); }
+function showQuestion() { const q = questions[currentQuestion]; document.getElementById('progress').textContent = '问题 ' + (currentQuestion + 1) + ' / ' + questions.length; let html = '<div class="question"><h3>' + q.q + '</h3><div class="options">'; q.options.forEach(opt => { html += '<button onclick="handleAnswer(\'' + opt.val + '\')">' + opt.text + '</button>'; }); html += '</div></div>'; document.getElementById('questions').innerHTML = html; }
+function handleAnswer(val) { playClick(); answer(val); }
+function answer(val) { answers[val]++; currentQuestion++; if (currentQuestion < questions.length) { showQuestion(); } else { playDramatic(); showResult(); } }
+function showResult() { const ei = answers.E >= answers.I ? "E" : "I"; const sn = answers.S >= answers.N ? "S" : "N"; const tf = answers.T >= answers.F ? "T" : "F"; const jp = answers.J >= answers.P ? "J" : "P"; playerMBTI = ei + sn + tf + jp; document.getElementById('mbti-type').textContent = playerMBTI; document.getElementById('mbti-desc').textContent = mbtiDescs[playerMBTI] || "你是一个独特的个体。"; showScreen('result-screen'); const el = document.getElementById('mbti-type'); el.classList.add('glitch'); setTimeout(() => el.classList.remove('glitch'), 1500); }
+function startStory() { showScreen('story-screen'); showStoryNode('start'); }
+function showStoryNode(nodeId) { const node = storyData[nodeId]; if (!node) return; if (node.effect === 'glitch') { document.getElementById('story-text').classList.add('glitch'); setTimeout(() => document.getElementById('story-text').classList.remove('glitch'), 800); } if (node.effect === 'shake') { document.querySelector('.story').classList.add('shake'); setTimeout(() => document.querySelector('.story').classList.remove('shake'), 500); } if (node.effect === 'flash') { document.body.classList.add('screen-flash'); setTimeout(() => document.body.classList.remove('screen-flash'), 150); } document.getElementById('story-text').textContent = node.text; let html = ''; if (node.endingTag) { html += '<div class="' + (node.endingClass || '') + '"><span class="ending-tag">' + node.endingTag + '</span></div>'; } node.choices.forEach(choice => { html += '<button class="choice-btn" onclick="showStoryNode(\'' + choice.next + '\')">' + choice.text + '</button>'; }); document.getElementById('choices').innerHTML = html; document.getElementById('story-screen').scrollIntoView({ behavior: 'smooth' }); }
+function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+for (let i = 0; i < 15; i++) { const p = document.createElement('div'); p.className = 'particle'; p.style.left = Math.random() * 100 + 'vw'; p.style.animationDelay = Math.random() * 8 + 's'; p.style.animationDuration = (6 + Math.random() * 6) + 's'; document.body.appendChild(p); }
     </script>
 </body>
 </html>
