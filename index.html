@@ -189,18 +189,42 @@
     </div>
 
     <script>
-    // ==================== 音频系统 ====================
+    // ==================== 音频系统 (Google 恐怖音效) ====================
     let audioCtx = null;
     let bgmGain = null;
-    let bgmStarted = false;
+    let bgmSource = null;
     let isMuted = false;
+    let soundsLoaded = {};
+
+    // 音效 URLs (Google Actions Sound Library - 免费可商用)
+    const SOUND_URLS = {
+        wind: 'https://actions.google.com/sounds/v1/horror/hallow_wind.ogg',
+        swoosh: 'https://actions.google.com/sounds/v1/horror/swoosh.ogg',
+        growl: 'https://actions.google.com/sounds/v1/horror/female_monster_growls.ogg',
+        break: 'https://actions.google.com/sounds/v1/impacts/broken_plates.ogg',
+        ambient: 'https://actions.google.com/sounds/v1/horror/ambient_hum_pitched.ogg'
+    };
+
+    async function loadSound(name) {
+        if (soundsLoaded[name]) return soundsLoaded[name];
+        try {
+            const response = await fetch(SOUND_URLS[name]);
+            const arrayBuffer = await response.arrayBuffer();
+            const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+            soundsLoaded[name] = audioBuffer;
+            return audioBuffer;
+        } catch(e) {
+            console.log('Failed to load sound:', name, e);
+            return null;
+        }
+    }
 
     function initAudio() {
         try {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 bgmGain = audioCtx.createGain();
-                bgmGain.gain.value = 0.25;
+                bgmGain.gain.value = 0.4;
                 bgmGain.connect(audioCtx.destination);
             }
             if (audioCtx.state === 'suspended') {
@@ -209,109 +233,53 @@
         } catch(e) { console.log('Audio not available'); }
     }
 
-    function playClick() {
+    async function playSound(name, volume = 1.0, loop = false) {
         try {
             if (!audioCtx || isMuted) return;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'square';
-            osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.08);
-            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.1);
-        } catch(e) {}
+            const buffer = await loadSound(name);
+            if (!buffer) return;
+            
+            const source = audioCtx.createBufferSource();
+            const gainNode = audioCtx.createGain();
+            
+            source.buffer = buffer;
+            source.loop = loop;
+            gainNode.gain.value = volume;
+            
+            source.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            source.start();
+            
+            return source;
+        } catch(e) { console.log('Play sound error:', e); }
+    }
+
+    function playClick() {
+        playSound('break', 0.6);
     }
 
     function playTransition() {
-        try {
-            if (!audioCtx || isMuted) return;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(80, audioCtx.currentTime);
-            osc.frequency.linearRampToValueAtTime(40, audioCtx.currentTime + 0.25);
-            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-            gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.3);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.35);
-        } catch(e) {}
+        playSound('swoosh', 0.5);
     }
 
     function playWhisper() {
-        try {
-            if (!audioCtx || isMuted) return;
-            const osc = audioCtx.createOscillator();
-            const filter = audioCtx.createBiquadFilter();
-            const gain = audioCtx.createGain();
-            osc.type = 'sawtooth';
-            osc.frequency.value = 250 + Math.random() * 200;
-            filter.type = 'bandpass';
-            filter.frequency.value = 900;
-            filter.Q.value = 8;
-            gain.gain.setValueAtTime(0, audioCtx.currentTime);
-            gain.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 0.3);
-            gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1.5);
-            osc.connect(filter);
-            filter.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 1.8);
-        } catch(e) {}
+        playSound('growl', 0.3);
     }
 
-    function startBGM() {
-        if (bgmStarted || isMuted) return;
-        bgmStarted = true;
-        
-        // 环境低音
+    async function startBGM() {
+        if (isMuted) return;
         try {
-            const osc1 = audioCtx.createOscillator();
-            const osc2 = audioCtx.createOscillator();
-            const filter = audioCtx.createBiquadFilter();
-            
-            osc1.type = 'sawtooth';
-            osc1.frequency.value = 55;
-            osc2.type = 'sine';
-            osc2.frequency.value = 110;
-            
-            filter.type = 'lowpass';
-            filter.frequency.value = 180;
-            
-            osc1.connect(filter);
-            osc2.connect(filter);
-            filter.connect(bgmGain);
-            
-            osc1.start();
-            osc2.start();
+            // 播放风声环境音 (循环)
+            bgmSource = await playSound('wind', 0.4, true);
             
             // 随机恐怖音效
             setInterval(() => {
-                if (!isMuted && Math.random() > 0.6) {
-                    const sounds = [playWhisper, () => {
-                        try {
-                            if (!audioCtx) return;
-                            const osc = audioCtx.createOscillator();
-                            const gain = audioCtx.createGain();
-                            osc.type = 'sine';
-                            osc.frequency.setValueAtTime(60, audioCtx.currentTime);
-                            osc.frequency.exponentialRampToValueAtTime(25, audioCtx.currentTime + 0.4);
-                            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
-                            osc.connect(gain);
-                            gain.connect(audioCtx.destination);
-                            osc.start();
-                            osc.stop(audioCtx.currentTime + 0.5);
-                        } catch(e) {}
-                    }];
-                    sounds[Math.floor(Math.random() * sounds.length)]();
+                if (!isMuted && Math.random() > 0.5) {
+                    const horrorSounds = ['growl', 'ambient'];
+                    const randomSound = horrorSounds[Math.floor(Math.random() * horrorSounds.length)];
+                    playSound(randomSound, 0.25);
                 }
-            }, 4000);
+            }, 5000);
         } catch(e) { console.log('BGM error:', e); }
     }
 
@@ -323,8 +291,8 @@
             if (bgmGain) bgmGain.gain.value = 0;
         } else {
             btn.textContent = '🔊 音效';
-            if (bgmGain) bgmGain.gain.value = 0.25;
-            if (!bgmStarted) startBGM();
+            if (bgmGain) bgmGain.gain.value = 0.4;
+            if (!bgmSource) startBGM();
         }
     }
 
@@ -579,7 +547,7 @@
     function showQuestion() {
         const q = questions[currentQuestion];
         let html = '<div class="question"><h3>' + q.q + '</h3><div class="options">';
-        q.options.forEach((opt, i) => {
+        q.options.forEach(function(opt, i) {
             html += '<button onclick="handleAnswer(\'' + opt.type + '\')">' + opt.text + '</button>';
         });
         html += '</div></div>';
