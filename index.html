@@ -212,7 +212,7 @@
                 都无法逃脱。<br><br>
                 <span style="color:#555; font-size:0.85em;">— 基于 MBTI 性格的恐怖文字冒险 —</span>
             </p>
-            <button class="start-btn" onclick="startGame()">开始测试</button>
+            <button class="start-btn" onclick="if(typeof startGame==="function"){startGame()}else{location.reload()}">开始测试</button>
         </div>
         
         <!-- 问卷画面 -->
