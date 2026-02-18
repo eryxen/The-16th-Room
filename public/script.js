@@ -1,19 +1,23 @@
-// The 16th Room v1.1 - Simple Frontend
+// The 16th Room v1.3 - Fixed Frontend
 
 // ============ MBTI Questions ============
 const mbtiQuestions = [
-    { text: "在黑暗的房间里，你更愿意...", E: "找其他人一起探索", I: "独自静静观察" },
-    { text: "听到奇怪声音时，你的第一反应是...", S: "仔细分辨声音来源", N: "想象各种可能原因" },
-    { text: "面对未知威胁，你倾向于...", T: "冷静分析，制定策略", F: "考虑对所有人的影响" },
-    { text: "在危机中，你更喜欢...", J: "按照既定计划行动", P: "灵活应变" },
-    { text: "恐怖电影中，你更害怕...", E: "被所有人抛弃", I: "被迫成为焦点" },
-    { text: "面对超自然现象，你更相信...", S: "能看到的具体证据", N: "直觉和第六感" },
-    { text: "做重要决定时，你更重视...", T: "客观事实和逻辑", F: "内心感受和价值观" },
-    { text: "在不确定的情况下，你更倾向于...", J: "尽快做出决定", P: "保持开放收集更多信息" },
-    { text: "参加聚会时，你通常...", E: "主动与多人交流", I: "找熟人深入交谈" },
-    { text: "学习新事物时，你更喜欢...", S: "从具体细节开始", N: "先理解整体概念" },
-    { text: "批评别人时，你更注重...", T: "指出具体问题", F: "考虑对方感受" },
-    { text: "面对变化时，你更...", J: "希望有充分准备时间", P: "享受变化的新鲜感" }
+    // EI
+    { text: "在黑暗的房间里，你更愿意...", a: "找其他人一起探索，互相壮胆", b: "独自静静观察，避免引起注意" },
+    { text: "恐怖电影中，你更害怕...", a: "被所有人抛弃，孤立无援", b: "被迫成为众人焦点" },
+    { text: "参加聚会时，你通常...", a: "主动与很多人交流", b: "找几个熟悉的人深入交谈" },
+    // SN
+    { text: "听到奇怪声音时，你的第一反应是...", a: "仔细分辨声音的来源和性质", b: "想象各种可能的恐怖原因" },
+    { text: "面对超自然现象，你更相信...", a: "能看到、听到的具体证据", b: "直觉和第六感的警告" },
+    { text: "学习新事物时，你更喜欢...", a: "从具体细节开始学习", b: "先理解整体概念和联系" },
+    // TF
+    { text: "面对未知威胁，你倾向于...", a: "冷静分析局势，制定逻辑策略", b: "考虑对所有人的情感影响" },
+    { text: "做重要决定时，你更重视...", a: "客观事实和逻辑推理", b: "内心感受和价值观" },
+    { text: "批评别人时，你更注重...", a: "指出具体问题和解决方案", b: "考虑对方的感受和自尊" },
+    // JP
+    { text: "在危机中，你更喜欢...", a: "按照既定计划行动", b: "灵活应变，适应情况" },
+    { text: "在不确定的情况下，你更倾向于...", a: "尽快做出明确决定", b: "保持开放，收集更多信息" },
+    { text: "面对变化时，你更...", a: "希望有充分的准备时间", b: "享受变化带来的新鲜感" }
 ];
 
 // ============ State ============
@@ -26,19 +30,10 @@ let state = {
     horrorLevel: 1
 };
 
-// ============ DOM Elements ============
-const screens = {
-    welcome: document.getElementById('welcome-screen'),
-    test: document.getElementById('test-screen'),
-    result: document.getElementById('result-screen'),
-    chat: document.getElementById('chat-screen')
-};
-
 // ============ Functions ============
 function showScreen(screenName) {
-    console.log('Showing screen:', screenName);
-    Object.values(screens).forEach(s => s.classList.remove('active'));
-    screens[screenName].classList.add('active');
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(screenName + '-screen').classList.add('active');
 }
 
 function startTest() {
@@ -50,76 +45,44 @@ function startTest() {
 
 function showQuestion() {
     const q = mbtiQuestions[state.currentQuestion];
-    console.log('Question:', q);
-    console.log('Current index:', state.currentQuestion);
     document.getElementById('question-text').textContent = q.text;
-    document.getElementById('question-counter').textContent = 
-        `${state.currentQuestion + 1} / ${mbtiQuestions.length}`;
+    document.getElementById('question-counter').textContent = (state.currentQuestion + 1) + ' / ' + mbtiQuestions.length;
+    document.getElementById('progress').style.width = ((state.currentQuestion + 1) / mbtiQuestions.length * 100) + '%';
     
-    const progress = ((state.currentQuestion + 1) / mbtiQuestions.length) * 100;
-    document.getElementById('progress').style.width = progress + '%';
+    const container = document.getElementById('question-options');
+    container.innerHTML = '';
     
-    const optionsContainer = document.getElementById('question-options');
-    optionsContainer.innerHTML = '';
+    // Option A
+    const btnA = document.createElement('div');
+    btnA.className = 'option';
+    btnA.textContent = 'A: ' + q.a;
+    btnA.onclick = function() { selectAnswer('A'); };
+    container.appendChild(btnA);
     
-    // Get the two options from the question (it has keys like E,I or S,N etc.)
-    const keys = Object.keys(q).filter(k => k !== 'text');
-    console.log('Keys:', keys);
-    const opt1 = keys[0];
-    const opt2 = keys[1];
-    console.log('Option 1:', opt1, '=', q[opt1]);
-    console.log('Option 2:', opt2, '=', q[opt2]);
-    
-    // Option 1
-    const btn1 = document.createElement('div');
-    btn1.className = 'option';
-    btn1.textContent = q[opt1];
-    btn1.onclick = () => selectAnswer(opt1);
-    optionsContainer.appendChild(btn1);
-    
-    // Option 2
-    const btn2 = document.createElement('div');
-    btn2.className = 'option';
-    btn2.textContent = q[opt2];
-    btn2.onclick = () => selectAnswer(opt2);
-    optionsContainer.appendChild(btn2);
-    
-    // Highlight selected
-    if (state.answers[state.currentQuestion]) {
-        const selected = state.answers[state.currentQuestion] === opt1 ? btn1 : btn2;
-        selected.classList.add('selected');
-    }
+    // Option B
+    const btnB = document.createElement('div');
+    btnB.className = 'option';
+    btnB.textContent = 'B: ' + q.b;
+    btnB.onclick = function() { selectAnswer('B'); };
+    container.appendChild(btnB);
     
     updateNavButtons();
 }
 
-function selectAnswer(answer) {
-    state.answers[state.currentQuestion] = answer;
-    
-    // Update UI
-    document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
-    const index = answer === 'E' ? 0 : 1;
-    document.querySelectorAll('.option')[index].classList.add('selected');
-    
+function selectAnswer(ans) {
+    state.answers[state.currentQuestion] = ans;
+    document.querySelectorAll('.option').forEach(function(opt, i) {
+        opt.classList.toggle('selected', (ans === 'A' && i === 0) || (ans === 'B' && i === 1));
+    });
     updateNavButtons();
 }
 
 function updateNavButtons() {
-    const prevBtn = document.getElementById('prev-btn');
+    document.getElementById('prev-btn').disabled = state.currentQuestion === 0;
     const nextBtn = document.getElementById('next-btn');
-    
-    prevBtn.disabled = state.currentQuestion === 0;
-    
-    const hasAnswer = state.answers[state.currentQuestion];
     const isLast = state.currentQuestion === mbtiQuestions.length - 1;
-    
-    if (isLast && hasAnswer) {
-        nextBtn.textContent = '完成';
-        nextBtn.disabled = false;
-    } else {
-        nextBtn.textContent = '下一题';
-        nextBtn.disabled = !hasAnswer;
-    }
+    nextBtn.disabled = !state.answers[state.currentQuestion];
+    nextBtn.textContent = isLast ? '完成' : '下一题';
 }
 
 function nextQuestion() {
@@ -139,175 +102,123 @@ function prevQuestion() {
 }
 
 async function finishTest() {
-    const loading = document.getElementById('loading');
-    loading.classList.remove('hidden');
+    document.getElementById('loading').classList.remove('hidden');
     
-    try {
-        const response = await fetch('/api/mbti-test', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ answers: state.answers })
-        });
-        
-        const result = await response.json();
-        state.userType = result.userType;
-        state.npcType = result.npcType;
-        state.npc = result.npc;
-        
-        // Show results
-        document.getElementById('user-type').textContent = result.userType;
-        document.getElementById('npc-name').textContent = result.npc.name;
-        document.getElementById('npc-desc').textContent = result.npc.description;
-        document.getElementById('scenario').textContent = result.npc.scenario;
-        
-        showScreen('result');
-    } catch (e) {
-        console.error('Test error:', e);
-        alert('测试失败，请重试');
-    }
+    // Convert A/B to MBTI
+    let mbti = '';
+    // E/I (questions 0-2)
+    let e = state.answers.filter((a, i) => i < 3 && a === 'A').length;
+    mbti += e > 1 ? 'E' : 'I';
+    // S/N (questions 3-5)
+    let s = state.answers.filter((a, i) => i >= 3 && i < 6 && a === 'A').length;
+    mbti += s > 1 ? 'S' : 'N';
+    // T/F (questions 6-8)
+    let t = state.answers.filter((a, i) => i >= 6 && i < 9 && a === 'A').length;
+    mbti += t > 1 ? 'T' : 'F';
+    // J/P (questions 9-11)
+    let j = state.answers.filter((a, i) => i >= 9 && a === 'A').length;
+    mbti += j > 1 ? 'J' : 'P';
     
-    loading.classList.add('hidden');
+    const opposites = {
+        'INTJ':'ESFP','INTP':'ESFJ','ENTJ':'ISFP','ENTP':'ISFJ',
+        'INFJ':'ESTP','INFP':'ESTJ','ENFJ':'ISTP','ENFP':'ISTJ',
+        'ISTJ':'ENFP','ISFJ':'ENTP','ESTJ':'INFP','ESFJ':'INTP',
+        'ISTP':'ENFJ','ISFP':'ENTJ','ESTP':'INFJ','ESFP':'INTJ'
+    };
+    
+    const npcNames = {
+        'ESFP':{name:'The Chaotic Performer',desc:'疯狂的表演者，强迫你放弃所有计划，活在混乱当下',scenario:'你被困在永不停歇的派对中，音乐震耳欲聋...'},
+        'ESFJ':{name:'The Social Enforcer',desc:'社交暴君，强迫你服从群体规范',scenario:'你在一个窒息的社交聚会上...'},
+        'ISFP':{name:'The Passive Saboteur',desc:'被动攻击者，用沉默破坏你的雄心',scenario:'你的每个计划都被温柔抵制...'},
+        'ISFJ':{name:'The Tradition Keeper',desc:'传统守护者，用规则束缚你的创新',scenario:'你被无数规则包围...'},
+        'ESTP':{name:'The Reckless Realist',desc:'鲁莽的现实主义者，嘲笑你的理想',scenario:'你被困在噪音中...'},
+        'ESTJ':{name:'The Corporate Overlord',desc:'冷酷的企业高管，要求你服从系统',scenario:'你在冷酷的办公室里...'},
+        'ISTP':{name:'The Cold Analyst',desc:'冷漠的分析师，否定你帮助他人的意义',scenario:'你想要帮助的人都拒绝你...'},
+        'ISTJ':{name:'The Rigid Systematizer',desc:'死板的系统管理员，否定你的创意',scenario:'你被困在严格的系统中...'},
+        'ENFP':{name:'The Chaotic Idealist',desc:'混乱的理想主义者，强迫你拥抱无序',scenario:'你的计划被混乱打乱...'},
+        'ENTP':{name:'The Ruthless Debater',desc:'无情的辩论家，质疑你的善意',scenario:'你的每个举动都被质疑动机...'},
+        'INFP':{name:'The Sensitive Idealist',desc:'敏感的理想主义者，用情感质疑你的决定',scenario:'你的每个决定都被质疑道德...'},
+        'INTP':{name:'The Logical Hermit',desc:'逻辑隐士，否定你的社交努力',scenario:'你的关怀被冷酷分析摧毁...'},
+        'ENFJ':{name:'The Overbearing Guide',desc:'专横的引导者，强迫你按他的方式发展',scenario:'你被导师控制...'},
+        'ENTJ':{name:'The Demanding Commander',desc:'苛刻的指挥官，强迫你服从目标',scenario:'你被迫放弃个人价值...'},
+        'INFJ':{name:'The Prophetic Manipulator',desc:'先知操控者，用预言控制你的行为',scenario:'先知不断告诉你注定的失败...'},
+        'INTJ':{name:'The Master Strategist',desc:'主策略师，用计划否定你的自然表达',scenario:'你被困在系统中，失去自我...'}
+    };
+    
+    const npcType = opposites[mbti] || 'ESFP';
+    const npc = npcNames[npcType] || npcNames['ESFP'];
+    
+    state.userType = mbti;
+    state.npcType = npcType;
+    state.npc = npc;
+    
+    document.getElementById('user-type').textContent = mbti;
+    document.getElementById('npc-name').textContent = npc.name;
+    document.getElementById('npc-desc').textContent = npc.desc;
+    document.getElementById('scenario').textContent = npc.scenario;
+    
+    showScreen('result');
+    document.getElementById('loading').classList.add('hidden');
 }
 
 function enterChat() {
-    document.getElementById('current-npc').textContent = `与 ${state.npc.name} 对话`;
-    
-    const messagesContainer = document.getElementById('chat-messages');
-    messagesContainer.innerHTML = '';
-    
-    // Welcome message
+    document.getElementById('current-npc').textContent = '与 ' + state.npc.name + ' 对话';
+    document.getElementById('chat-messages').innerHTML = '';
     addMessage('ai', state.npc.name, state.npc.scenario);
-    
     showScreen('chat');
 }
 
 function addMessage(sender, name, content) {
-    const messagesContainer = document.getElementById('chat-messages');
-    const msgDiv = document.createElement('div');
-    msgDiv.className = `message ${sender}`;
-    msgDiv.innerHTML = `<div class="message-sender">${name}</div><div class="message-content">${content}</div>`;
-    messagesContainer.appendChild(msgDiv);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    const div = document.createElement('div');
+    div.className = 'message ' + sender;
+    div.innerHTML = '<div class="message-sender">' + name + '</div><div class="message-content">' + content + '</div>';
+    document.getElementById('chat-messages').appendChild(div);
+    document.getElementById('chat-messages').scrollTop = 99999;
 }
 
 async function sendMessage() {
     const input = document.getElementById('message-input');
-    const message = input.value.trim();
-    if (!message) return;
+    const msg = input.value.trim();
+    if (!msg) return;
     
-    addMessage('user', '你', message);
+    addMessage('user', '你', msg);
     input.value = '';
-    
-    const loading = document.getElementById('loading');
-    loading.classList.remove('hidden');
+    document.getElementById('loading').classList.remove('hidden');
     
     try {
-        const response = await fetch('/api/chat', {
+        const res = await fetch('/api/chat', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                message: message,
-                userType: state.userType,
-                npcType: state.npcType,
-                horrorLevel: state.horrorLevel
-            })
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({message:msg, userType:state.userType, npcType:state.npcType, horrorLevel:state.horrorLevel})
         });
-        
-        const result = await response.json();
-        
+        const result = await res.json();
         if (result.success) {
             addMessage('ai', state.npc.name, result.message);
-            
-            // Level up
             if (Math.random() < 0.3 && state.horrorLevel < 5) {
                 state.horrorLevel++;
-                const dots = '●'.repeat(state.horrorLevel) + '○'.repeat(5 - state.horrorLevel);
-                document.querySelector('.level-dots').textContent = dots;
-                addMessage('ai', '系统', `⚠️ 恐怖等级升至 ${state.horrorLevel}/5`);
+                document.querySelector('.level-dots').textContent = '●'.repeat(state.horrorLevel) + '○'.repeat(5-state.horrorLevel);
+                addMessage('ai', '系统', '⚠️ 恐怖等级升至 ' + state.horrorLevel + '/5');
             }
-        } else {
-            addMessage('ai', '系统', '抱歉，AI暂时无法回应');
         }
-    } catch (e) {
-        console.error('Chat error:', e);
+    } catch(e) {
         addMessage('ai', '系统', '连接中断');
     }
     
-    loading.classList.add('hidden');
+    document.getElementById('loading').classList.add('hidden');
 }
 
-function restart() {
-    if (confirm('确定要重新开始吗？')) {
-        state = { currentQuestion: 0, answers: [], userType: null, npcType: null, npc: null, horrorLevel: 1 };
-        showScreen('welcome');
-    }
-}
-
-// ============ Initialize ============
-function init() {
-    console.log('Initializing The 16th Room v1.2...');
-    
-    const startBtn = document.getElementById('start-btn');
-    const testScreen = document.getElementById('test-screen');
-    const welcomeScreen = document.getElementById('welcome-screen');
-    
-    console.log('startBtn:', startBtn);
-    console.log('testScreen:', testScreen);
-    console.log('welcomeScreen:', welcomeScreen);
-    
-    if (startBtn) {
-        startBtn.onclick = function() {
-            console.log('Button clicked! Switching to test screen...');
-            welcomeScreen.classList.remove('active');
-            testScreen.classList.add('active');
-            startTest();
-        };
-        console.log('Start button event attached');
-    } else {
-        console.error('Start button NOT FOUND');
-    }
-    
-    // Navigation
-    const nextBtn = document.getElementById('next-btn');
-    const prevBtn = document.getElementById('prev-btn');
-    
-    if (nextBtn) nextBtn.onclick = nextQuestion;
-    if (prevBtn) prevBtn.onclick = prevQuestion;
-    
-    // Enter room
-    const enterBtn = document.getElementById('enter-room-btn');
-    if (enterBtn) enterBtn.onclick = enterChat;
-    
-    // Chat
-    const sendBtn = document.getElementById('send-btn');
-    const msgInput = document.getElementById('message-input');
-    
-    if (sendBtn) sendBtn.onclick = sendMessage;
-    if (msgInput) msgInput.onkeypress = (e) => {
-        if (e.key === 'Enter') sendMessage();
-    };
-    
-    // Controls
-    const restartBtn = document.getElementById('restart-btn');
-    const escapeBtn = document.getElementById('escape-btn');
-    
-    if (restartBtn) restartBtn.onclick = restart;
-    if (escapeBtn) escapeBtn.onclick = () => {
-        addMessage('ai', '房间', '你试图逃离，但门已经被锁死了...');
-    };
-    
-    console.log('Initialization complete!');
-}
-
-// Start when DOM is ready
+// ============ Init ============
 window.onload = function() {
-    console.log('Window loaded, running init...');
-    init();
+    document.getElementById('start-btn').onclick = startTest;
+    document.getElementById('next-btn').onclick = nextQuestion;
+    document.getElementById('prev-btn').onclick = prevQuestion;
+    document.getElementById('enter-room-btn').onclick = enterChat;
+    document.getElementById('send-btn').onclick = sendMessage;
+    document.getElementById('message-input').onkeypress = function(e) { if(e.key==='Enter') sendMessage(); };
+    document.getElementById('restart-btn').onclick = function() { location.reload(); };
+    document.getElementById('escape-btn').onclick = function() { addMessage('ai','房间','你试图逃离，但门已经被锁死了...'); };
     
-    // Register Service Worker for PWA
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js')
-            .then(reg => console.log('Service Worker registered!', reg))
-            .catch(err => console.log('Service Worker registration failed:', err));
+        navigator.serviceWorker.register('/sw.js').catch(function() {});
     }
 };
