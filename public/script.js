@@ -27,7 +27,9 @@ let state = {
     userType: null,
     npcType: null,
     npc: null,
-    horrorLevel: 1
+    horrorLevel: 1,
+    userName: '',
+    userGender: ''
 };
 
 // ============ Functions ============
@@ -171,10 +173,33 @@ async function finishTest() {
 }
 
 function enterChat() {
+    showScreen('char');
+}
+
+function showCharScreen() {
+    showScreen('char');
+}
+
+function startChat() {
+    const name = document.getElementById('char-name').value.trim() || '陌生人';
+    state.userName = name;
+    
     document.getElementById('current-npc').textContent = '与 ' + state.npc.name + ' 对话';
     document.getElementById('chat-messages').innerHTML = '';
-    addMessage('ai', state.npc.name, state.npc.scenario);
+    
+    const genderText = state.userGender === 'male' ? '他' : state.userGender === 'female' ? '她' : '它';
+    const introMsg = state.npc.scenario + '\n\n' + state.npc.name + '注意到了' + genderText + '——' + state.userName + '。';
+    
+    addMessage('ai', state.npc.name, introMsg);
     showScreen('chat');
+}
+
+function selectGender(gender, btn) {
+    state.userGender = gender;
+    document.querySelectorAll('.gender-btn').forEach(function(b) {
+        b.classList.remove('selected');
+    });
+    btn.classList.add('selected');
 }
 
 function addMessage(sender, name, content) {
@@ -190,7 +215,7 @@ async function sendMessage() {
     const msg = input.value.trim();
     if (!msg) return;
     
-    addMessage('user', '你', msg);
+    addMessage('user', state.userName, msg);
     input.value = '';
     document.getElementById('loading').classList.remove('hidden');
     
@@ -198,7 +223,14 @@ async function sendMessage() {
         const res = await fetch('/api/chat', {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({message:msg, userType:state.userType, npcType:state.npcType, horrorLevel:state.horrorLevel})
+            body: JSON.stringify({
+                message: msg, 
+                userType: state.userType, 
+                npcType: state.npcType, 
+                horrorLevel: state.horrorLevel,
+                userName: state.userName,
+                userGender: state.userGender
+            })
         });
         const result = await res.json();
         if (result.success) {
@@ -221,11 +253,19 @@ window.onload = function() {
     document.getElementById('start-btn').onclick = startTest;
     document.getElementById('next-btn').onclick = nextQuestion;
     document.getElementById('prev-btn').onclick = prevQuestion;
-    document.getElementById('enter-room-btn').onclick = enterChat;
+    document.getElementById('create-char-btn').onclick = showCharScreen;
+    document.getElementById('start-chat-btn').onclick = startChat;
     document.getElementById('send-btn').onclick = sendMessage;
     document.getElementById('message-input').onkeypress = function(e) { if(e.key==='Enter') sendMessage(); };
     document.getElementById('restart-btn').onclick = function() { location.reload(); };
     document.getElementById('escape-btn').onclick = function() { addMessage('ai','房间','你试图逃离，但门已经被锁死了...'); };
+    
+    // Gender selection
+    document.querySelectorAll('.gender-btn').forEach(function(btn) {
+        btn.onclick = function() {
+            selectGender(this.dataset.gender, this);
+        };
+    });
     
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js').catch(function() {});

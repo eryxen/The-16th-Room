@@ -449,3 +449,62 @@ body {
         transform: rotate(90deg);
     }
 }
+
+/* Character Creation */
+.char-form {
+    margin: 2rem 0;
+    text-align: left;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    color: var(--accent-orange);
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    background: var(--panel-bg);
+    border: 1px solid rgba(255, 149, 0, 0.3);
+    border-radius: 2px;
+    color: var(--text-light);
+    font-size: 1rem;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--accent-orange);
+}
+
+.gender-options {
+    display: flex;
+    gap: 1rem;
+}
+
+.gender-btn {
+    flex: 1;
+    padding: 12px;
+    background: var(--panel-bg);
+    border: 1px solid rgba(255, 149, 0, 0.3);
+    border-radius: 2px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.gender-btn:hover {
+    border-color: var(--accent-orange);
+}
+
+.gender-btn.selected {
+    background: rgba(255, 149, 0, 0.2);
+    border-color: var(--accent-orange);
+}

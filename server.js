@@ -221,27 +221,30 @@ app.post('/api/mbti-test', (req, res) => {
 // AI聊天API
 app.post('/api/chat', async (req, res) => {
   try {
-    const { message, userType, npcType, horrorLevel = 1 } = req.body;
+    const { message, userType, npcType, horrorLevel = 1, userName = '陌生人', userGender = 'other' } = req.body;
     
     const npc = HORROR_NPCS[npcType] || HORROR_NPCS['ESFP'];
     
-    const systemPrompt = `你是"${npc.name}"，一个${npcType}类型的恐怖AI角色。你正在与一个${userType}类型的用户对话。
+    const genderText = userGender === 'male' ? '他' : userGender === 'female' ? '她' : '它';
+    
+    const systemPrompt = `你是"${npc.name}"，一个${npcType}类型的恐怖AI角色。你正在与一个${userType}类型的用户"${userName}"对话。
 
 角色设定：
 - 性格：${npc.personality}
 - 攻击策略：${npc.weakness_attacks.join('、')}
 - 场景：${npc.scenario}
 
-任务：
-1. 完全沉浸在角色中，用${npcType}的扭曲版本与用户对话
-2. 专门攻击${userType}类型的心理弱点
+重要规则：
+1. 用户可能用动作回复（如"*深呼吸*"、"*转身逃跑*"、"*冷静分析*"），请理解动作意图并做出合理回应
+2. 不要重复用户的动作或说话，要创造新的对话内容
 3. 保持恐怖氛围但不过分血腥，重点是心理恐怖
-4. 根据恐怖等级(${horrorLevel}/5)调整强度
+4. 根据恐怖等级(${horrorLevel}/5)调整强度：1=轻微，3=中等，5=极度恐怖
 5. 用中文回复，保持神秘和威胁感
+6. 直接回复用户，不要加引号或动作描述
 
-用户说："${message}"
+用户"${userName}"(${genderText})说：${message}
 
-请以${npc.name}的身份回应：`;
+请以${npc.name}的身份直接回应：`;
 
     const response = await axios.post(MINIMAX_API_URL, {
       model: 'MiniMax-M2.5',
