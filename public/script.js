@@ -50,6 +50,8 @@ function startTest() {
 
 function showQuestion() {
     const q = mbtiQuestions[state.currentQuestion];
+    console.log('Question:', q);
+    console.log('Current index:', state.currentQuestion);
     document.getElementById('question-text').textContent = q.text;
     document.getElementById('question-counter').textContent = 
         `${state.currentQuestion + 1} / ${mbtiQuestions.length}`;
@@ -62,8 +64,11 @@ function showQuestion() {
     
     // Get the two options from the question (it has keys like E,I or S,N etc.)
     const keys = Object.keys(q).filter(k => k !== 'text');
+    console.log('Keys:', keys);
     const opt1 = keys[0];
     const opt2 = keys[1];
+    console.log('Option 1:', opt1, '=', q[opt1]);
+    console.log('Option 2:', opt2, '=', q[opt2]);
     
     // Option 1
     const btn1 = document.createElement('div');
