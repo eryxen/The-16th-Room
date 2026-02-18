@@ -40,8 +40,12 @@ body {
     animation: fadeIn 0.5s ease-in-out;
 }
 
+.screen {
+    display: none !important;
+}
+
 .screen.active {
-    display: block;
+    display: block !important;
 }
 
 @keyframes fadeIn {
