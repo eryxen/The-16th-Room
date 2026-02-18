@@ -105,10 +105,16 @@ class The16thRoom {
     
     bindEvents() {
         // 开始按钮
-        document.getElementById('start-btn').addEventListener('click', () => {
-            this.showScreen('test-screen');
-            this.startTest();
-        });
+        const startBtn = document.getElementById('start-btn');
+        if (startBtn) {
+            startBtn.addEventListener('click', () => {
+                console.log('Start button clicked!');
+                this.showScreen('test-screen');
+                this.startTest();
+            });
+        } else {
+            console.error('Start button not found!');
+        }
         
         // 测试导航
         document.getElementById('next-btn').addEventListener('click', () => {
