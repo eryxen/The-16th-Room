@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The 16th Room - MBTI Horror Experience</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 欢迎页面 -->
+        <div id="welcome-screen" class="screen active">
+            <div class="logo">
+                <h1>🏚️ The 16th Room</h1>
+                <p class="subtitle">Personalized Horror AI Experience</p>
+            </div>
+            
+            <div class="warning">
+                <h3>⚠️ 心理恐怖体验警告</h3>
+                <p>本应用将根据您的MBTI人格类型，创造针对性的心理恐怖体验</p>
+                <p>如果您有严重的心理健康问题，请谨慎使用</p>
+            </div>
+            
+            <button id="start-btn" class="primary-btn">开始心理测试</button>
+        </div>
+
+        <!-- MBTI测试页面 -->
+        <div id="test-screen" class="screen">
+            <div class="test-container">
+                <h2>🧠 MBTI人格检测</h2>
+                <div class="progress-bar">
+                    <div class="progress" id="progress"></div>
+                </div>
+                
+                <div class="question-container">
+                    <h3 id="question-text"></h3>
+                    <div class="options" id="question-options"></div>
+                </div>
+                
+                <div class="test-controls">
+                    <button id="prev-btn" class="secondary-btn" disabled>上一题</button>
+                    <span id="question-counter">1 / 12</span>
+                    <button id="next-btn" class="secondary-btn" disabled>下一题</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结果页面 -->
+        <div id="result-screen" class="screen">
+            <div class="result-container">
+                <h2>🔮 人格分析完成</h2>
+                
+                <div class="mbti-result">
+                    <div class="user-type">
+                        <h3>您的人格类型</h3>
+                        <div class="type-badge" id="user-type"></div>
+                    </div>
+                    
+                    <div class="arrow">→</div>
+                    
+                    <div class="npc-type">
+                        <h3>您的恐怖对手</h3>
+                        <div class="horror-npc" id="horror-npc">
+                            <div class="npc-name" id="npc-name"></div>
+                            <div class="npc-desc" id="npc-desc"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="scenario" id="scenario"></div>
+                
+                <button id="enter-room-btn" class="danger-btn">进入恐怖房间</button>
+            </div>
+        </div>
+
+        <!-- 聊天房间 -->
+        <div id="chat-screen" class="screen">
+            <div class="chat-container">
+                <div class="chat-header">
+                    <div class="room-info">
+                        <span class="room-title">🏚️ The 16th Room</span>
+                        <span class="npc-indicator" id="current-npc"></span>
+                    </div>
+                    <div class="horror-level">
+                        <span>恐怖等级: </span>
+                        <div class="level-indicator" id="horror-level">
+                            <span class="level-dots">●●●○○</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-messages" id="chat-messages"></div>
+                
+                <div class="chat-input">
+                    <input type="text" id="message-input" placeholder="输入您的回应..." autocomplete="off">
+                    <button id="send-btn">发送</button>
+                </div>
+                
+                <div class="chat-controls">
+                    <button id="restart-btn" class="secondary-btn">重新开始</button>
+                    <button id="escape-btn" class="danger-btn">逃离房间</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 加载提示 -->
+    <div id="loading" class="loading hidden">
+        <div class="loading-spinner"></div>
+        <p>AI正在分析您的恐惧...</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://zeabur.com/zeabur.json",
+  "build": {
+    "builder": "dockerfile",
+    "owner": "eryxen",
+    "repo": "The-16th-Room"
+  },
+  "deploys": {
+    "the-16th-room": {
+      "build": {
+        "dockerfile": "Dockerfile"
+      },
+      "env": {
+        "NODE_ENV": "production"
+      },
+      "port": 3000
+    }
+  }
+}

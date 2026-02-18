@@ -1,0 +1,21 @@
+{
+  "name": "the-16th-room",
+  "version": "1.0.0",
+  "description": "MBTI Horror AI Chat",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "build": "echo 'No build step required'"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "axios": "^1.6.0",
+    "body-parser": "^1.20.2",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
