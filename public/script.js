@@ -60,23 +60,28 @@ function showQuestion() {
     const optionsContainer = document.getElementById('question-options');
     optionsContainer.innerHTML = '';
     
-    // E option
-    const eBtn = document.createElement('div');
-    eBtn.className = 'option';
-    eBtn.textContent = q.E;
-    eBtn.onclick = () => selectAnswer('E');
-    optionsContainer.appendChild(eBtn);
+    // Get the two options from the question (it has keys like E,I or S,N etc.)
+    const keys = Object.keys(q).filter(k => k !== 'text');
+    const opt1 = keys[0];
+    const opt2 = keys[1];
     
-    // I option
-    const iBtn = document.createElement('div');
-    iBtn.className = 'option';
-    iBtn.textContent = q.I;
-    iBtn.onclick = () => selectAnswer('I');
-    optionsContainer.appendChild(iBtn);
+    // Option 1
+    const btn1 = document.createElement('div');
+    btn1.className = 'option';
+    btn1.textContent = q[opt1];
+    btn1.onclick = () => selectAnswer(opt1);
+    optionsContainer.appendChild(btn1);
+    
+    // Option 2
+    const btn2 = document.createElement('div');
+    btn2.className = 'option';
+    btn2.textContent = q[opt2];
+    btn2.onclick = () => selectAnswer(opt2);
+    optionsContainer.appendChild(btn2);
     
     // Highlight selected
     if (state.answers[state.currentQuestion]) {
-        const selected = state.answers[state.currentQuestion] === 'E' ? eBtn : iBtn;
+        const selected = state.answers[state.currentQuestion] === opt1 ? btn1 : btn2;
         selected.classList.add('selected');
     }
     
