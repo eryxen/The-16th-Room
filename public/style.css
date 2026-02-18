@@ -165,10 +165,16 @@ body {
 
 /* Question text */
 #question-text {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    margin-bottom: 16px;
     line-height: 1.6;
-    color: var(--text-light);
+    color: #ffffff !important;
+    min-height: 60px;
+    display: block !important;
+    text-align: center;
+    padding: 12px;
+    background: rgba(0, 240, 255, 0.1);
+    border-radius: 8px;
 }
 
 /* Options - Alyx style */
