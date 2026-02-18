@@ -597,3 +597,137 @@ body {
         transform: rotate(90deg);
     }
 }
+
+/* ========== Glitch Effect Animations ========== */
+@keyframes glitch {
+    0% {
+        transform: translate(0);
+        text-shadow: 2px 0 var(--accent-copper), -2px 0 var(--accent-gold);
+    }
+    20% {
+        transform: translate(-3px, 2px);
+        text-shadow: -2px 0 var(--accent-copper), 2px 0 var(--accent-gold);
+    }
+    40% {
+        transform: translate(3px, -2px);
+        text-shadow: 2px 0 var(--accent-copper), -2px 0 var(--accent-gold);
+    }
+    60% {
+        transform: translate(-2px, -1px);
+        text-shadow: -1px 0 var(--accent-copper), 1px 0 var(--accent-gold);
+    }
+    80% {
+        transform: translate(2px, 1px);
+        text-shadow: 1px 0 var(--accent-copper), -1px 0 var(--accent-gold);
+    }
+    100% {
+        transform: translate(0);
+        text-shadow: 2px 0 var(--accent-copper), -2px 0 var(--accent-gold);
+    }
+}
+
+@keyframes glitch-border {
+    0%, 100% {
+        border-color: var(--accent-gold);
+        box-shadow: 0 0 10px rgba(201, 162, 39, 0.3);
+    }
+    25% {
+        border-color: var(--accent-copper);
+        box-shadow: 0 0 20px rgba(184, 115, 51, 0.5);
+    }
+    50% {
+        border-color: #ff4444;
+        box-shadow: 0 0 15px rgba(255, 68, 68, 0.4);
+    }
+    75% {
+        border-color: var(--accent-copper);
+        box-shadow: 0 0 20px rgba(184, 115, 51, 0.5);
+    }
+}
+
+@keyframes scanline {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(100%);
+    }
+}
+
+@keyframes flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 1;
+    }
+    20%, 24%, 55% {
+        opacity: 0.8;
+    }
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 
+            4px 4px 8px var(--shadow-dark),
+            0 0 10px rgba(201, 162, 39, 0.3);
+    }
+    50% {
+        box-shadow: 
+            4px 4px 8px var(--shadow-dark),
+            0 0 25px rgba(201, 162, 39, 0.6);
+    }
+}
+
+/* Apply glitch to title */
+.logo h1 {
+    animation: glitch 3s infinite, flicker 0.15s infinite;
+}
+
+/* Apply glitch to buttons on hover */
+.primary-btn:hover {
+    animation: glitch-border 0.5s infinite, pulse-glow 1s infinite;
+}
+
+/* Apply to warning */
+.warning {
+    animation: glitch-border 4s infinite;
+}
+
+/* Scanline overlay effect */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.15),
+        rgba(0, 0, 0, 0.15) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    pointer-events: none;
+    z-index: 9999;
+}
+
+/* CRT screen curve effect */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+        ellipse at center,
+        transparent 0%,
+        rgba(0, 0, 0, 0.3) 100%
+    );
+    pointer-events: none;
+    z-index: 9998;
+}
+
+/* Loading spinner glitch */
+.loading-spinner {
+    animation: glitch 0.3s infinite;
+}
