@@ -27,9 +27,7 @@ let state = {
     userType: null,
     npcType: null,
     npc: null,
-    horrorLevel: 1,
-    userName: '',
-    userGender: ''
+    horrorLevel: 1
 };
 
 // ============ Functions ============
@@ -77,15 +75,6 @@ function selectAnswer(ans) {
         opt.classList.toggle('selected', (ans === 'A' && i === 0) || (ans === 'B' && i === 1));
     });
     updateNavButtons();
-    
-    // Auto advance to next question
-    setTimeout(function() {
-        if (state.currentQuestion < mbtiQuestions.length - 1) {
-            nextQuestion();
-        } else {
-            finishTest();
-        }
-    }, 300);
 }
 
 function updateNavButtons() {
@@ -173,33 +162,10 @@ async function finishTest() {
 }
 
 function enterChat() {
-    showScreen('char');
-}
-
-function showCharScreen() {
-    showScreen('char');
-}
-
-function startChat() {
-    const name = document.getElementById('char-name').value.trim() || '陌生人';
-    state.userName = name;
-    
     document.getElementById('current-npc').textContent = '与 ' + state.npc.name + ' 对话';
     document.getElementById('chat-messages').innerHTML = '';
-    
-    const genderText = state.userGender === 'male' ? '他' : state.userGender === 'female' ? '她' : '它';
-    const introMsg = state.npc.scenario + '\n\n' + state.npc.name + '注意到了' + genderText + '——' + state.userName + '。';
-    
-    addMessage('ai', state.npc.name, introMsg);
+    addMessage('ai', state.npc.name, state.npc.scenario);
     showScreen('chat');
-}
-
-function selectGender(gender, btn) {
-    state.userGender = gender;
-    document.querySelectorAll('.gender-btn').forEach(function(b) {
-        b.classList.remove('selected');
-    });
-    btn.classList.add('selected');
 }
 
 function addMessage(sender, name, content) {
@@ -215,7 +181,7 @@ async function sendMessage() {
     const msg = input.value.trim();
     if (!msg) return;
     
-    addMessage('user', state.userName, msg);
+    addMessage('user', '你', msg);
     input.value = '';
     document.getElementById('loading').classList.remove('hidden');
     
@@ -223,14 +189,7 @@ async function sendMessage() {
         const res = await fetch('/api/chat', {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({
-                message: msg, 
-                userType: state.userType, 
-                npcType: state.npcType, 
-                horrorLevel: state.horrorLevel,
-                userName: state.userName,
-                userGender: state.userGender
-            })
+            body: JSON.stringify({message:msg, userType:state.userType, npcType:state.npcType, horrorLevel:state.horrorLevel})
         });
         const result = await res.json();
         if (result.success) {
@@ -248,42 +207,16 @@ async function sendMessage() {
     document.getElementById('loading').classList.add('hidden');
 }
 
-// ============ Parallax Effect ============
-function initParallax() {
-    const container = document.querySelector('.container');
-    if (!container) return;
-    
-    document.addEventListener('mousemove', function(e) {
-        const x = (window.innerWidth / 2 - e.clientX) / 50;
-        const y = (window.innerHeight / 2 - e.clientY) / 50;
-        
-        // Subtle parallax that doesn't break centering
-        container.style.transform = 
-            'translate(' + (x * 0.5) + 'px, ' + (y * 0.5) + 'px)';
-    });
-}
-
 // ============ Init ============
 window.onload = function() {
     document.getElementById('start-btn').onclick = startTest;
     document.getElementById('next-btn').onclick = nextQuestion;
     document.getElementById('prev-btn').onclick = prevQuestion;
-    document.getElementById('create-char-btn').onclick = showCharScreen;
-    document.getElementById('start-chat-btn').onclick = startChat;
+    document.getElementById('enter-room-btn').onclick = enterChat;
     document.getElementById('send-btn').onclick = sendMessage;
     document.getElementById('message-input').onkeypress = function(e) { if(e.key==='Enter') sendMessage(); };
     document.getElementById('restart-btn').onclick = function() { location.reload(); };
     document.getElementById('escape-btn').onclick = function() { addMessage('ai','房间','你试图逃离，但门已经被锁死了...'); };
-    
-    // Gender selection
-    document.querySelectorAll('.gender-btn').forEach(function(btn) {
-        btn.onclick = function() {
-            selectGender(this.dataset.gender, this);
-        };
-    });
-    
-    // Init parallax
-    initParallax();
     
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js').catch(function() {});
