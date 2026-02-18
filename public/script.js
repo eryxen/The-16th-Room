@@ -248,6 +248,20 @@ async function sendMessage() {
     document.getElementById('loading').classList.add('hidden');
 }
 
+// ============ Parallax Effect ============
+function initParallax() {
+    const container = document.querySelector('.container');
+    if (!container) return;
+    
+    document.addEventListener('mousemove', function(e) {
+        const x = (window.innerWidth / 2 - e.clientX) / 30;
+        const y = (window.innerHeight / 2 - e.clientY) / 30;
+        
+        container.style.transform = 
+            'translateZ(-10px) rotateY(' + x + 'deg) rotateX(' + -y + 'deg)';
+    });
+}
+
 // ============ Init ============
 window.onload = function() {
     document.getElementById('start-btn').onclick = startTest;
@@ -266,6 +280,9 @@ window.onload = function() {
             selectGender(this.dataset.gender, this);
         };
     });
+    
+    // Init parallax
+    initParallax();
     
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js').catch(function() {});
