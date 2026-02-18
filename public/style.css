@@ -82,9 +82,13 @@ body {
 .logo {
     text-align: center;
     background: linear-gradient(180deg, #1e1e2a 0%, #14141c 100%);
-    padding: 28px;
+    padding: 40px 30px;
     position: relative;
     overflow: hidden;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .logo::before {
@@ -126,6 +130,10 @@ body {
     border: 1px solid var(--accent-pink);
     position: relative;
     overflow: hidden;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .warning::before {
