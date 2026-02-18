@@ -28,10 +28,14 @@ body {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 800px;
     margin: 0 auto;
     padding: 20px;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 /* 通用样式 */
@@ -64,6 +68,8 @@ body {
     text-transform: uppercase;
     letter-spacing: 1px;
     font-weight: bold;
+    display: block;
+    margin: 0 auto;
 }
 
 .primary-btn {
@@ -115,16 +121,23 @@ body {
     text-align: center;
 }
 
+.logo {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
 .logo h1 {
-    font-size: 4rem;
+    font-size: 3rem;
     margin-bottom: 0.5rem;
     text-shadow: 0 0 20px var(--accent-red);
+    text-align: center;
 }
 
 .subtitle {
     font-size: 1.2rem;
     color: var(--text-dim);
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
+    text-align: center;
 }
 
 .warning {
@@ -132,8 +145,9 @@ body {
     border: 1px solid var(--accent-red);
     border-radius: 12px;
     padding: 2rem;
-    margin-bottom: 3rem;
+    margin: 0 auto 3rem auto;
     max-width: 500px;
+    text-align: center;
 }
 
 .warning h3 {
@@ -146,6 +160,7 @@ body {
     max-width: 600px;
     margin: 0 auto;
     padding: 2rem;
+    text-align: center;
 }
 
 .test-container h2 {
