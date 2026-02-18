@@ -31,7 +31,7 @@ body {
 
 /* Half-Life style panels */
 .screen {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
@@ -44,7 +44,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
+    padding-bottom: 8vh;
 }
 
 /* Main title - Half-Life style */
