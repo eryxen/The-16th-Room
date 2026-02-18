@@ -207,6 +207,20 @@ async function sendMessage() {
     document.getElementById('loading').classList.add('hidden');
 }
 
+// ============ Deep Parallax Effect ============
+function initParallax() {
+    const container = document.querySelector('.container');
+    if (!container) return;
+    
+    document.addEventListener('mousemove', function(e) {
+        const x = (window.innerWidth / 2 - e.clientX) / 40;
+        const y = (window.innerHeight / 2 - e.clientY) / 40;
+        
+        container.style.transform = 
+            'translateZ(-20px) rotateY(' + x + 'deg) rotateX(' + (-y) + 'deg)';
+    });
+}
+
 // ============ Init ============
 window.onload = function() {
     document.getElementById('start-btn').onclick = startTest;
@@ -217,6 +231,9 @@ window.onload = function() {
     document.getElementById('message-input').onkeypress = function(e) { if(e.key==='Enter') sendMessage(); };
     document.getElementById('restart-btn').onclick = function() { location.reload(); };
     document.getElementById('escape-btn').onclick = function() { addMessage('ai','房间','你试图逃离，但门已经被锁死了...'); };
+    
+    // Init parallax
+    initParallax();
     
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js').catch(function() {});
