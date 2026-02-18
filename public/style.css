@@ -28,7 +28,7 @@ body {
 }
 
 .container {
-    max-width: 800px;
+    max-width: 600px;
     margin: 0 auto;
     padding: 20px;
     min-height: 100vh;
@@ -36,6 +36,12 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    text-align: center;
+}
+
+.container > * {
+    width: 100%;
+    max-width: 100%;
 }
 
 /* 通用样式 */
