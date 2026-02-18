@@ -256,6 +256,9 @@ body {
     margin-bottom: 16px;
     line-height: 1.6;
     color: var(--text-light);
+    min-height: 60px;
+    display: block;
+    text-align: center;
 }
 
 /* Option cards - Embossed */
