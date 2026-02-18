@@ -75,6 +75,15 @@ function selectAnswer(ans) {
         opt.classList.toggle('selected', (ans === 'A' && i === 0) || (ans === 'B' && i === 1));
     });
     updateNavButtons();
+    
+    // Auto advance to next question
+    setTimeout(function() {
+        if (state.currentQuestion < mbtiQuestions.length - 1) {
+            nextQuestion();
+        } else {
+            finishTest();
+        }
+    }, 300);
 }
 
 function updateNavButtons() {
