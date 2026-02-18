@@ -235,39 +235,69 @@ function restart() {
 
 // ============ Initialize ============
 function init() {
-    console.log('Initializing The 16th Room...');
+    console.log('Initializing The 16th Room v1.2...');
     
-    // Start button
-    document.getElementById('start-btn').onclick = () => {
-        console.log('Start clicked');
-        startTest();
-    };
+    const startBtn = document.getElementById('start-btn');
+    const testScreen = document.getElementById('test-screen');
+    const welcomeScreen = document.getElementById('welcome-screen');
+    
+    console.log('startBtn:', startBtn);
+    console.log('testScreen:', testScreen);
+    console.log('welcomeScreen:', welcomeScreen);
+    
+    if (startBtn) {
+        startBtn.onclick = function() {
+            console.log('Button clicked! Switching to test screen...');
+            welcomeScreen.classList.remove('active');
+            testScreen.classList.add('active');
+            startTest();
+        };
+        console.log('Start button event attached');
+    } else {
+        console.error('Start button NOT FOUND');
+    }
     
     // Navigation
-    document.getElementById('next-btn').onclick = nextQuestion;
-    document.getElementById('prev-btn').onclick = prevQuestion;
+    const nextBtn = document.getElementById('next-btn');
+    const prevBtn = document.getElementById('prev-btn');
+    
+    if (nextBtn) nextBtn.onclick = nextQuestion;
+    if (prevBtn) prevBtn.onclick = prevQuestion;
     
     // Enter room
-    document.getElementById('enter-room-btn').onclick = enterChat;
+    const enterBtn = document.getElementById('enter-room-btn');
+    if (enterBtn) enterBtn.onclick = enterChat;
     
     // Chat
-    document.getElementById('send-btn').onclick = sendMessage;
-    document.getElementById('message-input').onkeypress = (e) => {
+    const sendBtn = document.getElementById('send-btn');
+    const msgInput = document.getElementById('message-input');
+    
+    if (sendBtn) sendBtn.onclick = sendMessage;
+    if (msgInput) msgInput.onkeypress = (e) => {
         if (e.key === 'Enter') sendMessage();
     };
     
     // Controls
-    document.getElementById('restart-btn').onclick = restart;
-    document.getElementById('escape-btn').onclick = () => {
+    const restartBtn = document.getElementById('restart-btn');
+    const escapeBtn = document.getElementById('escape-btn');
+    
+    if (restartBtn) restartBtn.onclick = restart;
+    if (escapeBtn) escapeBtn.onclick = () => {
         addMessage('ai', '房间', '你试图逃离，但门已经被锁死了...');
     };
     
-    console.log('Initialization complete');
+    console.log('Initialization complete!');
 }
 
 // Start when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-} else {
+window.onload = function() {
+    console.log('Window loaded, running init...');
     init();
-}
+    
+    // Register Service Worker for PWA
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('Service Worker registered!', reg))
+            .catch(err => console.log('Service Worker registration failed:', err));
+    }
+};
