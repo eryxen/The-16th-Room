@@ -254,11 +254,12 @@ function initParallax() {
     if (!container) return;
     
     document.addEventListener('mousemove', function(e) {
-        const x = (window.innerWidth / 2 - e.clientX) / 30;
-        const y = (window.innerHeight / 2 - e.clientY) / 30;
+        const x = (window.innerWidth / 2 - e.clientX) / 50;
+        const y = (window.innerHeight / 2 - e.clientY) / 50;
         
+        // Subtle parallax that doesn't break centering
         container.style.transform = 
-            'translateZ(-10px) rotateY(' + x + 'deg) rotateX(' + -y + 'deg)';
+            'translate(' + (x * 0.5) + 'px, ' + (y * 0.5) + 'px)';
     });
 }
 

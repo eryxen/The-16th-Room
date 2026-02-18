@@ -36,17 +36,15 @@ body {
     perspective: 1000px;
 }
 
-/* Screen container with parallax */
+/* Screen container */
 .screen {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     display: none;
-    padding: 30px;
-    transform-style: preserve-3d;
-    transition: transform 0.1s ease-out;
+    padding: 20px;
 }
 
 .screen.active {
@@ -56,12 +54,13 @@ body {
     justify-content: center;
 }
 
-/* Retro container with soft embossing */
+/* Retro container */
 .container {
-    max-width: 550px;
+    max-width: 500px;
     width: 100%;
     position: relative;
-    transform-style: preserve-3d;
+    margin: 0 auto;
+    text-align: center;
 }
 
 /* Main panel - soft embossed vintage look */
