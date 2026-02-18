@@ -25,23 +25,14 @@ body {
     color: var(--text-light);
     min-height: 100vh;
     overflow-x: hidden;
+    position: relative;
 }
 
 .container {
+    width: 100%;
     max-width: 600px;
     margin: 0 auto;
-    padding: 20px;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     text-align: center;
-}
-
-.container > * {
-    width: 100%;
-    max-width: 100%;
 }
 
 /* 通用样式 */
@@ -54,8 +45,21 @@ body {
     display: none !important;
 }
 
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+    padding: 20px;
+}
+
 .screen.active {
-    display: block !important;
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 @keyframes fadeIn {
