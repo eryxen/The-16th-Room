@@ -290,7 +290,7 @@ body::after {
                 <p>本应用将根据您的MBTI人格类型，创造针对性的心理恐怖体验</p>
                 <p>如果您有严重的心理健康问题，请谨慎使用</p>
             </div>
-            <button class="btn" onclick="startTest()">开始心理测试</button>
+            <button id="start-btn" class="btn" onclick="startTest(); return false;">开始心理测试</button>
         </div>
     </div>
 
@@ -398,6 +398,7 @@ const npcs = {
 };
 
 // Parallax
+document.getElementById("start-btn").addEventListener("click", startTest);
 document.addEventListener('mousemove', e => {
     const c = document.querySelector('.container');
     if(c) {
