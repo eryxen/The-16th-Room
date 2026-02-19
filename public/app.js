@@ -2,22 +2,30 @@
 "use strict";
 
 var qs=[
-// E/I - 外向/内向 (问题1-3)
+// E/I - 外向/内向 (问题1-5)
 {t:"当你参加聚会时，你通常...",a:"和很多人聊天，主动认识新朋友",b:"只和几个熟悉的朋友聊天"},
 {t:"当你独自一人时，你通常...",a:"感到无聊，想找人聊天",b:"享受独处的时间"},
 {t:"在与他人交流时，你通常...",a:"先说出自己的想法",b:"先倾听他人的想法"},
-// S/N - 感觉/直觉 (问题4-6)
+{t:"在社交场合中，你更喜欢...",a:"成为焦点，被大家关注",b:"低调观察，不引起注意"},
+{t:"当你需要能量时，你会...",a:"从人群中汲取",b:"从独处中恢复"},
+// S/N - 感觉/直觉 (问题6-10)
 {t:"你更关注事物的...",a:"具体的事实和细节",b:"未来的可能性和整体模式"},
 {t:"学习新东西时，你更喜欢...",a:"亲自动手实践",b:"先理解理论和概念"},
 {t:"你更相信...",a:"经验和已证明的事实",b:"直觉和灵感"},
-// T/F - 思考/情感 (问题7-9)
+{t:"描述事物时，你倾向于...",a:"描述实际看到的",b:"想象可能变成的样子"},
+{t:"你更容易记住...",a:"具体的事情",b:"patterns和联系"},
+// T/F - 思考/情感 (问题11-15)
 {t:"做决定时，你更看重...",a:"逻辑和客观分析",b:"个人价值观和他人的感受"},
 {t:"当你不同意别人时，你会...",a:"直接指出问题所在",b:"考虑对方的感受，委婉表达"},
 {t:"你更容易被...",a:"有逻辑的分析说服",b:"情感上的打动"},
-// J/P - 判断/知觉 (问题10-12)
+{t:"在争论中，你更站在...",a:"事实和逻辑的一方",b:"关系和和谐的一方"},
+{t:"你觉得自己更...",a:"理性冷静",b:"温暖体贴"},
+// J/P - 判断/知觉 (问题16-20)
 {t:"你更喜欢...",a:"有计划、有条理的生活",b:"灵活、随性的生活方式"},
 {t:"面对截止日期，你会...",a:"提前完成，避免压力",b:"最后时刻爆发效率"},
-{t:"你做事通常...",a:"按部就班，完成一项再做另一项",b:"同时做很多事情"}
+{t:"你做事通常...",a:"按部就班，完成一项再做另一项",b:"同时做很多事情"},
+{t:"你更倾向于...",a:"做决定并坚持",b:"保持开放，等待更多可能性"},
+{t:"你更喜欢...",a:"确定的事情",b:"灵活的选择"}
 ];
 
 var opp={"INTJ":"ESFP","INTP":"ESFJ","ENTJ":"ISFP","ENTP":"ISFJ","INFJ":"ESTP","INFP":"ESTJ","ENFJ":"ISTP","ENFP":"ISTJ","ISTJ":"ENFP","ISFJ":"ENTP","ESTJ":"INFP","ESFJ":"INTP","ISTP":"ENFJ","ISFP":"ENTJ","ESTP":"INFJ","ESFP":"INTJ"};
@@ -73,19 +81,19 @@ function nextQ(){if(st.q<11){st.q++;showQ()}}
 function prevQ(){if(st.q>0){st.q--;showQ()}}
 
 function finish(){
-    // E/I (问题0-2): a=E, b=I
-    // S/N (问题3-5): a=S, b=N  
-    // T/F (问题6-8): a=T, b=F
-    // J/P (问题9-11): a=J, b=P
+    // E/I (问题0-4): a=E, b=I - 需要3/5
+    // S/N (问题5-9): a=S, b=N - 需要3/5
+    // T/F (问题10-14): a=T, b=F - 需要3/5
+    // J/P (问题15-19): a=J, b=P - 需要3/5
     var mt="";
-    var e=st.ans.filter(function(a,i){return i<3&&a==="a"}).length;
-    mt+=e>=2?"E":"I";
-    var s=st.ans.filter(function(a,i){return i>=3&&i<6&&a==="a"}).length;
-    mt+=s>=2?"S":"N";
-    var t=st.ans.filter(function(a,i){return i>=6&&i<9&&a==="a"}).length;
-    mt+=t>=2?"T":"F";
-    var j=st.ans.filter(function(a,i){return i>=9&&a==="a"}).length;
-    mt+=j>=2?"J":"P";
+    var e=st.ans.filter(function(a,i){return i<5&&a==="a"}).length;
+    mt+=e>=3?"E":"I";
+    var s=st.ans.filter(function(a,i){return i>=5&&i<10&&a==="a"}).length;
+    mt+=s>=3?"S":"N";
+    var t=st.ans.filter(function(a,i){return i>=10&&i<15&&a==="a"}).length;
+    mt+=t>=3?"T":"F";
+    var j=st.ans.filter(function(a,i){return i>=15&&a==="a"}).length;
+    mt+=j>=3?"J":"P";
     st.ut=mt;st.nt=opp[mt]||"ESFP";st.npc=npcs[st.nt]||npcs.ESFP;
     $("r-type").textContent=mt;
     $("r-npc").textContent=st.npc.n;
