@@ -234,8 +234,4 @@ window.onload = function() {
     
     // Init parallax
     initParallax();
-    
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js').catch(function() {});
-    }
 };
