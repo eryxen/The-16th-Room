@@ -2,6 +2,20 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
+    <script>
+    // Version auto-refresh: if cached version differs, force reload
+    (function(){
+        var V="2.0.1";
+        var k="t16r_v";
+        var old=localStorage.getItem(k);
+        if(old&&old!==V){
+            localStorage.setItem(k,V);
+            location.reload(true);
+            return;
+        }
+        localStorage.setItem(k,V);
+    })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#00f0ff">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
