@@ -10,7 +10,17 @@ const PORT = process.env.PORT || 8080;
 // 中间件
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static('public'));
+
+// 强制不缓存所有静态文件
+app.use(function(req, res, next) {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
+  res.set('Surrogate-Control', 'no-store');
+  next();
+});
+
+app.use(express.static('public', { etag: false, lastModified: false }));
 
 // MiniMax API 配置
 const MINIMAX_API_KEY = 'sk-cp-59BO9cA9dIEx22nkz3AgusUdi4FZDN1XS5JgCOHXdUvuJ6PoOs1gSeZrUF2adz_umY9VdtLjo5nhZBYxXRmYC_mBJAR2kGnJcundpbUD31aa-8P3GmWiXYE';
