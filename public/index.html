@@ -418,9 +418,9 @@ function showScr(n) {
     document.getElementById(n+'-screen').classList.add('active');
 }
 
-function startTest() { try { console.log("startTest clicked"); alert("测试开始");
+function startTest() { console.log("startTest clicked");
     st.q = 0; st.ans = [];
-    showQ(); } catch(e) { alert("错误: " + e.message); }
+    showQ();
     showScr('test');
 }
 
@@ -447,8 +447,8 @@ function selAns(k) {
     setTimeout(() => st.q < 11 ? nextQ() : finish(), 350);
 }
 
-function nextQ() { if(st.q<11){st.q++;showQ(); } catch(e) { alert("错误: " + e.message); }} }
-function prevQ() { if(st.q>0){st.q--;showQ(); } catch(e) { alert("错误: " + e.message); }} }
+function nextQ() { if(st.q<11){st.q++;showQ();} }
+function prevQ() { if(st.q>0){st.q--;showQ();} }
 
 function finish() {
     let mt='', e=st.ans.filter((a,i)=>i<3&&a==='a').length;
