@@ -499,13 +499,13 @@ async function sendMsg() {
         });
         const x = await r.json();
         if(x.success) {
-            addMsg('ai', st.npc.n, x.message);
+            addMsg('ai', st.npc.n, x.message); document.getElementById("loader").classList.add("hidden");
             if(Math.random()<0.3 && st.hl<5) {
                 st.hl++;
                 addMsg('ai','系统','⚠️ 恐怖等级升至 '+st.hl+'/5');
             }
         }
-    } catch(e) { addMsg('ai','系统','连接中断'); }
+    } catch(e) { document.getElementById("loader").classList.add("hidden"); addMsg('ai','系统','连接中断'); }
     document.getElementById('loader').classList.add('hidden');
 }
     </script>
