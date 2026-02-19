@@ -364,6 +364,8 @@ body::after {
     <div class="loader hidden" id="loader"><div class="spin"></div></div>
 
     <script>
+console.log("JS loaded");
+
 const qs = [
     {t:"在黑暗的房间里，你更愿意...",a:"找其他人一起探索，互相壮胆",b:"独自静静观察，避免引起注意"},
     {t:"恐怖电影中，你更害怕...",a:"被所有人抛弃，孤立无援",b:"被迫成为众人焦点"},
@@ -416,9 +418,9 @@ function showScr(n) {
     document.getElementById(n+'-screen').classList.add('active');
 }
 
-function startTest() {
+function startTest() { try { console.log("startTest clicked"); alert("测试开始");
     st.q = 0; st.ans = [];
-    showQ();
+    showQ(); } catch(e) { alert("错误: " + e.message); }
     showScr('test');
 }
 
@@ -445,8 +447,8 @@ function selAns(k) {
     setTimeout(() => st.q < 11 ? nextQ() : finish(), 350);
 }
 
-function nextQ() { if(st.q<11){st.q++;showQ();} }
-function prevQ() { if(st.q>0){st.q--;showQ();} }
+function nextQ() { if(st.q<11){st.q++;showQ(); } catch(e) { alert("错误: " + e.message); }} }
+function prevQ() { if(st.q>0){st.q--;showQ(); } catch(e) { alert("错误: " + e.message); }} }
 
 function finish() {
     let mt='', e=st.ans.filter((a,i)=>i<3&&a==='a').length;
