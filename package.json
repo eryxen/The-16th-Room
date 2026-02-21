@@ -1,6 +1,6 @@
 {
   "name": "the-16th-room",
-  "version": "1.0.0",
+  "version": "2.1.0",
   "description": "MBTI Horror AI Chat",
   "main": "server.js",
   "scripts": {

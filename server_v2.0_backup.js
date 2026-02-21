@@ -320,29 +320,3 @@ app.listen(PORT, () => {
   console.log(`🎭 The 16th Room v1.0 running on http://localhost:${PORT}`);
   console.log(`🔥 Ready to generate personalized horror experiences!`);
 });
-// v2.1: API endpoint for NPC data
-app.post('/api/npc-data', (req, res) => {
-  const { npcType, variant = 0 } = req.body;
-  
-  if (!HORROR_NPCS[npcType]) {
-    return res.json({ success: false, error: 'Invalid NPC type' });
-  }
-  
-  const npc = HORROR_NPCS[npcType];
-  
-  // v2.1: Return NPC with scenarios
-  res.json({ 
-    success: true, 
-    npc: {
-      name: npc.name,
-      description: npc.description,
-      personality: npc.personality,
-      weakness_attacks: npc.weakness_attacks,
-      scenarios: [
-        { level: 'normal', text: npc.scenario },
-        { level: 'hard', text: npc.scenario + ' 压力增强...' },
-        { level: 'nightmare', text: '噩梦模式：' + npc.scenario }
-      ]
-    }
-  });
-});
