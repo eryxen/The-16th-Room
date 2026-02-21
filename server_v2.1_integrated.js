@@ -870,14 +870,13 @@ app.listen(PORT, () => {
 app.post('/api/npc-data', (req, res) => {
   const { npcType, variant = 0 } = req.body;
   
-  if (!HORROR_NPCS_V21[npcType]) {
+  if (!HORROR_NPCS[npcType]) {
     return res.json({ success: false, error: 'Invalid NPC type' });
   }
   
-  const npcVariants = HORROR_NPCS_V21[npcType];
-  const npc = npcVariants[variant] || npcVariants[0];
+  const npc = HORROR_NPCS[npcType];
   
-  // v2.1: Return NPC with complete data including scenarios
+  // v2.1: Return NPC with scenarios
   res.json({ 
     success: true, 
     npc: {
@@ -885,7 +884,11 @@ app.post('/api/npc-data', (req, res) => {
       description: npc.description,
       personality: npc.personality,
       weakness_attacks: npc.weakness_attacks,
-      scenarios: npc.scenarios
+      scenarios: [
+        { level: 'normal', text: npc.scenario },
+        { level: 'hard', text: npc.scenario + ' 压力增强...' },
+        { level: 'nightmare', text: '噩梦模式：' + npc.scenario }
+      ]
     }
   });
 });

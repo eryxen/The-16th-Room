@@ -139,6 +139,15 @@ function finish(){
     show("s-result");
 }
 
+function getHorrorStars(level){
+    var stars="";
+    var desc=["轻度不安","心理压力","深度恐惧","极限恐怖","精神崩溃"];
+    for(var i=0;i<5;i++){
+        stars+=(i<level?"⭐":"☆");
+    }
+    return stars+" "+(desc[level-1]||"");
+}
+
 function addMsg(t,n,c){
     var d=document.createElement("div");
     d.className="msg "+(t==="user"?"u":"a");
@@ -172,7 +181,7 @@ function sendMsg(){
             addMsg("ai",st.npc.n,x.message);
             if(Math.random()<0.3&&st.hl<5){
                 st.hl++;
-                addMsg("ai","系统","⚠️ 恐怖等级升至 "+st.hl+"/5");
+                addMsg("ai","系统","⚠️ 恐怖等级升级\n\n"+getHorrorStars(st.hl)+"\n\n当前等级："+st.hl+"/5");
             }
         }else{
             addMsg("ai","系统","连接异常");
